@@ -33,6 +33,11 @@
       .opacity-0 {
         opacity: 0;
       }
+
+      .payment-option.active {
+        border-color: #3b82f6; /* Tailwind: blue-500 */
+        background-color: #eff6ff; /* Tailwind: blue-50 */
+      }
     </style>
   </head>
 
@@ -117,7 +122,8 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
           <!-- Metode pembayaran (contoh) -->
           <div
-            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer"
+            class="payment-option border rounded-lg p-4 text-center hover:border-blue-500 transition cursor-pointer"
+            data-method="DANA"
           >
             <img
               src="images/DANA-scaled.jpeg"
@@ -126,14 +132,23 @@
             />
             <span class="text-sm font-semibold">DANA</span>
           </div>
+
+          <!-- OVO -->
           <div
-            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer"
+            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer relative"
           >
             <img src="images/OVO.png" alt="OVO" class="h-8 mx-auto mb-2" />
             <span class="text-sm font-semibold">OVO</span>
+
+            <div class="payment-details hidden mt-2 text-sm">
+              Nomor: <span class="font-medium">0856 5983 8977</span>
+              <button class="copy-btn ml-2 text-blue-500">Salin</button>
+            </div>
           </div>
+
+          <!-- GoPay -->
           <div
-            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer"
+            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer relative"
           >
             <img
               src="images/GoPay-Logo-2016.png"
@@ -141,39 +156,67 @@
               class="h-8 mx-auto mb-2"
             />
             <span class="text-sm font-semibold">GoPay</span>
+
+            <div class="payment-details hidden mt-2 text-sm">
+              Nomor: <span class="font-medium">0856 5983 8977</span>
+              <button class="copy-btn ml-2 text-blue-500">Salin</button>
+            </div>
           </div>
+
+          <!-- BRI -->
           <div
-            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer"
+            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer relative"
           >
             <img
               src="images/bri-logo-freelogovectors.net_.png"
-              alt="Bank"
+              alt="BRI"
               class="h-8 mx-auto mb-2"
             />
             <span class="text-sm font-semibold">BRI</span>
+
+            <div class="payment-details hidden mt-2 text-sm">
+              Rekening: <span class="font-medium">1234 5678 9012 3456</span>
+              <button class="copy-btn ml-2 text-blue-500">Salin</button>
+            </div>
           </div>
+
+          <!-- Mandiri -->
           <div
-            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer"
+            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer relative"
           >
             <img
               src="images/Logo Bank Mandiri.jpg"
-              alt="Bank"
+              alt="Mandiri"
               class="h-8 mx-auto mb-2"
             />
             <span class="text-sm font-semibold">Mandiri</span>
+
+            <div class="payment-details hidden mt-2 text-sm">
+              Rekening: <span class="font-medium">1122 3344 5566 7788</span>
+              <button class="copy-btn ml-2 text-blue-500">Salin</button>
+            </div>
           </div>
+
+          <!-- BCA -->
           <div
-            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer"
+            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer relative"
           >
             <img
               src="images/BCA-Bank-Logo-white.png"
-              alt="Bank"
+              alt="BCA"
               class="h-8 mx-auto mb-2"
             />
             <span class="text-sm font-semibold">BCA</span>
+
+            <div class="payment-details hidden mt-2 text-sm">
+              Rekening: <span class="font-medium">9876 5432 1098 7654</span>
+              <button class="copy-btn ml-2 text-blue-500">Salin</button>
+            </div>
           </div>
+
+          <!-- QRIS -->
           <div
-            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer"
+            class="border rounded-lg p-4 text-center hover:border-blue-500 transition payment-option cursor-pointer relative"
           >
             <img
               src="images/quick-response-code-indonesia-standard-qris-logo-png_seeklogo-391791.png"
@@ -181,6 +224,14 @@
               class="h-8 mx-auto mb-2"
             />
             <span class="text-sm font-semibold">QRIS</span>
+
+            <div class="payment-details hidden mt-2 text-sm">
+              <img
+                src="images/qr-code.png"
+                alt="QR Code"
+                class="mx-auto h-24"
+              />
+            </div>
           </div>
 
           <!-- Tambahkan metode lainnya sesuai kebutuhan -->
@@ -210,6 +261,18 @@
 
     <!-- Script -->
     <script>
+      // Tambahkan efek klik pada metode pembayaran
+      const paymentOptions = document.querySelectorAll(".payment-option");
+
+      paymentOptions.forEach((option) => {
+        option.addEventListener("click", () => {
+          // Hapus class 'active' dari semua
+          paymentOptions.forEach((el) => el.classList.remove("active"));
+          // Tambahkan class 'active' ke yang diklik
+          option.classList.add("active");
+        });
+      });
+
       function showPaymentResult() {
         const modal = document.getElementById("paymentModal");
         const box = document.getElementById("modalBox");
