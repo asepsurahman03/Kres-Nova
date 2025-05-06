@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Kres-Nova</title>
+    <link rel="shortcut icon" href="LogoKN1.ico" title="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .smooth-transition {
+        transition: all 0.3s ease;
+      }
+      .loading-spinner {
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      /* ... kode style yang sudah ada ... */
+
+      .google-btn:active,
+      .facebook-btn:active {
+        transform: scale(0.98);
+      }
+    </style>
+  </head>
+  <body class="bg-sky-400 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+      <div
+        class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center"
+      >
+        <a href="#" class="flex items-center">
+          <!-- Logo -->
+          <img
+            src="LogoKN1.png"
+            alt="Logo Kres-Nova"
+            class="h-8 w-8 mr-2 object-contain"
+          />
+          <p
+            class="font-montserrat font-bold text-2xl"
+            style="font-family: 'Montserrat', sans-serif"
+          >
+            Kres-Nova
+          </p>
+        </a>
+        <div class="hidden md:flex space-x-3 items-center">
+          <a
+            href="#"
+            class="text-gray-700 hover:text-blue-500 smooth-transition"
+            >Butuh Bantuan?</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- Login Section -->
+    <section class="py-16">
+      <div class="max-w-md mx-auto px-4">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <!-- Header Card -->
+          <div class="bg-blue-500 text-white py-4 px-6">
+            <h2 class="text-xl font-bold">Masuk ke Akun Anda</h2>
+            <p class="text-sm opacity-90">
+              Nikmati kemudahan memesan tiket pesawat dan hotel
+            </p>
+          </div>
+
+          <!-- Form Login -->
+          <div class="p-6">
+            <form id="loginForm">
+              <div class="mb-4">
+                <label
+                  for="email"
+                  class="block text-gray-700 text-sm font-medium mb-2"
+                  >Email atau Nomor Telepon</label
+                >
+                <input
+                  type="text"
+                  id="email"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent smooth-transition"
+                  placeholder="contoh@email.com"
+                  required
+                />
+              </div>
+
+              <div class="mb-6">
+                <label
+                  for="password"
+                  class="block text-gray-700 text-sm font-medium mb-2"
+                  >Kata Sandi</label
+                >
+                <div class="relative">
+                  <input
+                    type="password"
+                    id="password"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent smooth-transition"
+                    placeholder="Masukkan kata sandi"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+                    onclick="togglePasswordVisibility()"
+                  >
+                    <i class="far fa-eye"></i>
+                  </button>
+                </div>
+                <div class="flex justify-end mt-1">
+                  <a
+                    href="#"
+                    class="text-blue-500 text-xs hover:text-blue-700 smooth-transition"
+                    >Lupa kata sandi?</a
+                  >
+                </div>
+              </div>
+
+              <a
+                href="#"
+                onclick="handleLogin(event)"
+                class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 smooth-transition flex items-center justify-center cursor-pointer text-center"
+              >
+                <span id="login-text">MASUK</span>
+                <span id="login-loading" class="hidden ml-2">
+                  <i class="fas fa-circle-notch loading-spinner"></i>
+                </span>
+              </a>
+
+              <script>
+                function handleLogin(e) {
+                  e.preventDefault();
+                  document.getElementById("login-text").classList.add("hidden");
+                  document
+                    .getElementById("login-loading")
+                    .classList.remove("hidden");
+
+                  // Simulasi delay biar loading spinner kelihatan
+                  setTimeout(() => {
+                    window.location.href = "index.html";
+                  }, 1000); // 1 detik delay
+                }
+              </script>
+
+              <div class="mt-4 text-center text-sm">
+                <p class="text-gray-600">
+                  Belum punya akun?
+                  <a
+                    href="#"
+                    class="text-blue-500 font-medium hover:text-blue-700 smooth-transition"
+                    >Daftar sekarang</a
+                  >
+                </p>
+              </div>
+
+              <div class="mt-6 flex items-center">
+                <div class="flex-grow border-t border-gray-300"></div>
+                <span class="mx-4 text-gray-500 text-sm">ATAU</span>
+                <div class="flex-grow border-t border-gray-300"></div>
+              </div>
+
+              <div class="mt-6 grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  class="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md hover:bg-gray-50 smooth-transition google-btn"
+                >
+                  <img
+                    src="https://images.seeklogo.com/logo-png/26/2/google-2015-logo-png_seeklogo-268116.png"
+                    alt="Google"
+                    class="h-4 mr-2"
+                  />
+                  <span class="text-sm">Google</span>
+                </button>
+                <button
+                  type="button"
+                  class="flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md hover:bg-gray-50 smooth-transition facebook-btn"
+                >
+                  <i class="fab fa-facebook-f text-blue-600 mr-2"></i>
+                  <span class="text-sm">Facebook</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-10"></footer>
+
+    <script>
+      <style>/* ... kode style yang sudah ada ... */</style>;
+      // Toggle password visibility
+      function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.querySelector("#password + button i");
+
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          eyeIcon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+          passwordInput.type = "password";
+          eyeIcon.classList.replace("fa-eye-slash", "fa-eye");
+        }
+      }
+
+      // Handle form submission
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const loginText = document.getElementById("login-text");
+          const loginLoading = document.getElementById("login-loading");
+
+          loginText.classList.add("hidden");
+          loginLoading.classList.remove("hidden");
+
+          // Simulate API call
+          setTimeout(function () {
+            // Redirect to cobacoba.html after successful login
+            window.location.href = "cobacoba.html";
+
+            // Tidak perlu code di bawah karena page akan redirect
+            // loginText.classList.remove('hidden');
+            // loginLoading.classList.add('hidden');
+          }, 2000);
+        });
+    </script>
+  </body>
+</html>

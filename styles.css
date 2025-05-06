@@ -1,0 +1,40 @@
+/* Styling untuk dropdown */
+.dropdown-item {
+    margin-bottom: 1rem;
+  }
+  
+  select {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 1rem;
+  }
+  
+  /* Tombol selesai */
+  #selesai {
+    padding: 0.75rem 2rem;
+    border-radius: 0.375rem;
+    background-color: #1E3A8A;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  #selesai:hover {
+    background-color: #2563EB;
+  }
+  
+  /* Tombol dropdown */
+  button {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #2563EB;
+  }
+  
+  

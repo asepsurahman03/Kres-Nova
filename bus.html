@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kres-Nova - Tiket Pesawat Murah & Promo Hotel</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Animasi untuk dropdown */
+      .dropdown-menu {
+        transition: all 0.3s ease;
+      }
+
+      .smooth-transition {
+        transition: all 0.2s ease;
+      }
+      .smooth-transition {
+        transition: all 0.3s ease;
+      }
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      }
+      .promo-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .loading-spinner {
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      /* Tambahkan ini di bagian style */
+      .promo-slider-container {
+        position: relative;
+        overflow: visible;
+        width: 100%;
+        height: 200px; /* Sesuaikan tinggi sesuai kebutuhan */
+      }
+
+      .promo-slider-track {
+        display: flex;
+        transition: transform 0.5s ease;
+        height: 100%;
+      }
+
+      .promo-slide {
+        min-width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .slider-nav {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .slider-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+      }
+
+      .slider-dot.active {
+        background-color: white;
+      }
+
+      /* Styling untuk tab yang aktif */
+      .tab.active {
+        background-color: white;
+        color: blue;
+        border-bottom: 2px solid blue;
+      }
+
+      /* Styling untuk konten tab */
+      .tab-pane {
+        display: none;
+      }
+
+      .tab-pane.active {
+        display: block;
+      }
+
+      .swiper-button-prev-custom,
+      .swiper-button-next-custom {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        background-color: rgba(0, 0, 0, 0.4);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+      }
+
+      .swiper-button-prev-custom:hover,
+      .swiper-button-next-custom:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .swiper-button-prev-custom {
+        left: -10px; /* bisa disesuaikan */
+      }
+
+      .swiper-button-next-custom {
+        right: -10px; /* bisa disesuaikan */
+      }
+
+      .swiper-button-prev-custom,
+      .swiper-button-next-custom {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 10;
+        transition: background-color 0.3s ease;
+      }
+
+      .swiper-button-prev-custom {
+        left: -20px;
+      }
+
+      .swiper-button-next-custom {
+        right: -20px;
+      }
+
+      .swiper-button-prev-custom:hover,
+      .swiper-button-next-custom:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .slider-dot {
+        width: 10px;
+        height: 10px;
+        background-color: #ccc;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .slider-dot.active {
+        background-color: #f43f5e; /* contoh: merah muda, kamu bisa sesuaikan */
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 font-sans">
+    <section
+      class="relative bg-cover bg-center h-screen"
+      style="
+        background-image: url('images/cyberpunk_flying_jet_bus_with_neon_lights__by_roadkill205_djmzt8d.jpg');
+      "
+    >
+      <!-- Header with Smooth Scroll Links -->
+      <header
+        id="main-header"
+        class="bg-white/30 backdrop-blur-md shadow-md sticky top-0 z-50 transition duration-300"
+      >
+        <div
+          class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center"
+        >
+          <!-- Logo -->
+          <a href="index.html" class="flex items-center">
+            <img
+              src="LogoKN1.png"
+              alt="Logo Kres-Nova"
+              class="h-8 w-8 mr-2 object-contain"
+            />
+            <p
+              class="font-montserrat font-bold text-2xl text-white"
+              style="font-family: 'Montserrat', sans-serif"
+            >
+              Kres-Nova
+            </p>
+          </a>
+
+          <!-- Nav Desktop -->
+          <nav class="hidden md:flex space-x-6 text-sm font-medium">
+            <a href="#pesawat-section" class="text-white hover:text-blue-300"
+              >Tiket Pesawat</a
+            >
+            <a href="#hotel-section" class="text-white hover:text-blue-300"
+              >Hotel</a
+            >
+            <a
+              href="#rental-mobil-section"
+              class="text-white hover:text-blue-300"
+              >Rental Mobil</a
+            >
+            <a href="#tiket-bus-section" class="text-white hover:text-blue-300"
+              >Bus</a
+            >
+            <a href="#kereta-section" class="text-white hover:text-blue-300"
+              >Kereta Api</a
+            >
+            <a href="bantuan.html" class="text-white hover:text-blue-300"
+              >Butuh Bantuan?</a
+            >
+
+            <!-- Dropdown Desktop -->
+            <div class="relative" id="dropdown-pesanan-wrapper">
+              <button
+                id="dropdown-pesanan-btn"
+                class="text-white hover:text-blue-300 flex items-center"
+              >
+                Pesanan <i class="fas fa-chevron-down ml-1 text-xs"></i>
+              </button>
+              <div
+                id="dropdown-pesanan-menu"
+                class="absolute hidden bg-white text-black rounded shadow-lg mt-2 w-48 py-2 z-50"
+              >
+                <a
+                  href="wishlist.html"
+                  class="block px-4 py-2 hover:bg-gray-100"
+                  >Wishlist</a
+                >
+                <a href="history.html" class="block px-4 py-2 hover:bg-gray-100"
+                  >Histori Pesanan</a
+                >
+                <a href="favorit.html" class="block px-4 py-2 hover:bg-gray-100"
+                  >Item Favorit</a
+                >
+              </div>
+            </div>
+          </nav>
+
+          <!-- Language + Login + Daftar (Desktop) -->
+          <div class="hidden md:flex space-x-3 items-center">
+            <!-- Language Dropdown -->
+            <div class="relative group">
+              <button class="text-white hover:text-blue-300">
+                <i class="fas fa-globe mr-1"></i> ID
+              </button>
+              <div
+                class="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-2 py-2 w-32 right-0 z-50"
+              >
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >Indonesia</a
+                >
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >English</a
+                >
+              </div>
+            </div>
+
+            <a
+              href="logincoba.html"
+              class="border border-white text-white px-4 py-1.5 rounded text-sm hover:bg-white hover:text-blue-500 transition"
+              >Masuk</a
+            >
+            <a
+              href="singup.html"
+              class="bg-blue-500 text-white px-4 py-1.5 rounded text-sm hover:bg-blue-600 transition"
+              >Daftar</a
+            >
+          </div>
+
+          <!-- Burger Button (Mobile) -->
+          <button
+            id="burger"
+            class="md:hidden text-white text-2xl focus:outline-none"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <!-- Mobile Slide Menu -->
+        <div
+          id="mobile-menu"
+          class="fixed top-0 left-0 w-full bg-black text-white transform -translate-y-full transition-all duration-300 ease-in-out z-50 shadow-lg overflow-y-auto"
+        >
+          <div
+            class="p-4 flex justify-between items-center border-b border-gray-600"
+          >
+            <p class="text-lg font-semibold">Kres-Nova</p>
+            <button id="close-mobile-menu" class="text-xl text-white">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <div class="px-4 py-2">
+            <a href="#pesawat-section" class="block py-2 hover:text-blue-500"
+              >Tiket Pesawat</a
+            >
+            <a href="#hotel-section" class="block py-2 hover:text-blue-500"
+              >Hotel</a
+            >
+            <a
+              href="#rental-mobil-section"
+              class="block py-2 hover:text-blue-500"
+              >Rental Mobil</a
+            >
+            <a href="#tiket-bus-section" class="block py-2 hover:text-blue-500"
+              >Bus</a
+            >
+            <a href="#kereta-section" class="block py-2 hover:text-blue-500"
+              >Kereta Api</a
+            >
+            <a href="bantuan.html" class="block py-2 hover:text-blue-500"
+              >Butuh Bantuan?</a
+            >
+
+            <div class="pt-2">
+              <p class="font-semibold mb-1">Pesanan</p>
+              <a
+                href="wishlist.html"
+                class="block px-2 py-1 hover:bg-gray-700 rounded"
+                >Wishlist</a
+              >
+              <a
+                href="history.html"
+                class="block px-2 py-1 hover:bg-gray-700 rounded"
+                >Histori Pesanan</a
+              >
+              <a
+                href="favorit.html"
+                class="block px-2 py-1 hover:bg-gray-700 rounded"
+                >Item Favorit</a
+              >
+            </div>
+          </div>
+        </div>
+      </header>
+    </section>
+
+    <!-- Bagian Header Atas -->
+    <section class="bg-white border-b border-gray-200">
+      <div
+        class="flex flex-col md:flex-row justify-between items-start md:items-center p-4 md:p-6 gap-4"
+      >
+        <div class="text-gray-700">
+          <p class="text-lg font-semibold">Jakarta ➝ Bandung</p>
+          <p class="text-sm text-gray-500">Senin, 5 Mei 2025 ・ 1 kursi</p>
+        </div>
+        <button
+          class="bg-blue-600 text-white font-semibold text-sm px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Ubah Pencarian
+        </button>
+      </div>
+    </section>
+
+    <!-- Kontainer Utama -->
+    <section class="flex flex-col md:flex-row">
+      <!-- Filter Kiri -->
+      <aside
+        class="w-full md:w-64 bg-gray-50 p-4 border-r border-gray-200 space-y-4 text-sm"
+      >
+        <div
+          class="flex justify-between items-center font-semibold text-gray-800"
+        >
+          <span>Filter Hasil</span>
+          <a href="#" class="text-blue-600 text-sm hover:underline font-medium"
+            >Reset filter</a
+          >
+        </div>
+
+        <details class="group">
+          <summary class="cursor-pointer font-medium text-gray-700">
+            Pilih titik keberangkatan
+          </summary>
+          <div class="mt-2 ml-2 text-gray-600">
+            <label class="block"
+              ><input type="checkbox" class="mr-2" />Kelapa Gading</label
+            >
+            <label class="block"
+              ><input type="checkbox" class="mr-2" />Central Park</label
+            >
+          </div>
+        </details>
+
+        <details class="group">
+          <summary class="cursor-pointer font-medium text-gray-700">
+            Pilih titik tujuan
+          </summary>
+          <div class="mt-2 ml-2 text-gray-600">
+            <label class="block"
+              ><input type="checkbox" class="mr-2" />Dipati Ukur</label
+            >
+          </div>
+        </details>
+
+        <details>
+          <summary class="cursor-pointer font-medium text-gray-700">
+            Waktu Keberangkatan
+          </summary>
+        </details>
+        <details>
+          <summary class="cursor-pointer font-medium text-gray-700">
+            Waktu Kedatangan
+          </summary>
+        </details>
+        <details>
+          <summary class="cursor-pointer font-medium text-gray-700">
+            Nama PO
+          </summary>
+        </details>
+        <details>
+          <summary class="cursor-pointer font-medium text-gray-700">
+            Fasilitas
+          </summary>
+        </details>
+        <details>
+          <summary class="cursor-pointer font-medium text-gray-700">
+            Tata Kursi
+          </summary>
+        </details>
+      </aside>
+
+      <!-- Konten Kanan -->
+      <main class="flex-1 p-4 space-y-6">
+        <!-- Quick Filter & Sort -->
+        <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Filter & Urut Cepat</h3>
+            <button
+              class="bg-blue-100 text-blue-700 font-medium px-3 py-1 rounded flex items-center gap-1 text-sm"
+            >
+              Urutkan <span>✔</span>
+            </button>
+          </div>
+
+          <!-- Tag Filter -->
+          <div class="flex flex-wrap gap-2 text-sm font-medium">
+            <button class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full">
+              🎟️ EPIC Sale
+            </button>
+            <button class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+              Reschedule Mudah
+            </button>
+            <button class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+              🚐 Transfer Shuttle
+            </button>
+            <button class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+              Bisa Dijadwalkan Ulang
+            </button>
+          </div>
+
+          <!-- Slider Operator -->
+          <div class="mt-6 flex overflow-x-auto gap-4 pb-2">
+            <!-- Kartu 1 -->
+            <div
+              class="min-w-[180px] bg-gray-900 rounded-lg text-white relative p-3"
+            >
+              <img
+                src="images/luxurious-bus-body-builders-407.jpg"
+                alt="Jackal"
+                class="rounded mb-2"
+              />
+              <div class="font-bold">Jackal Holidays</div>
+              <div class="text-sm text-gray-300">Mulai Rp 89.000/pax</div>
+              <span
+                class="absolute top-2 right-2 bg-blue-600 text-xs px-2 py-1 rounded"
+                >4.7 / 5</span
+              >
+            </div>
+
+            <!-- Kartu 2 -->
+            <div
+              class="min-w-[180px] bg-gray-900 rounded-lg text-white relative p-3"
+            >
+              <img
+                src="images/05-1496667099-tata-motors-ashok-leyland-mahindra-collaborate-work-electric-bus8.jpg"
+                alt="Cititrans"
+                class="rounded mb-2"
+              />
+              <div class="font-bold">Cititrans</div>
+              <div class="text-sm text-gray-300">Mulai Rp 125.000/pax</div>
+              <span
+                class="absolute top-2 right-2 bg-blue-600 text-xs px-2 py-1 rounded"
+                >4.8 / 5</span
+              >
+            </div>
+
+            <!-- Kartu 3 -->
+            <div
+              class="min-w-[180px] bg-gray-900 rounded-lg text-white relative p-3"
+            >
+              <img src="images/unnamed.png" alt="Baraya" class="rounded mb-2" />
+              <div class="font-bold">Baraya Travel</div>
+              <div class="text-sm text-gray-300">Mulai Rp 67.999/pax</div>
+              <span
+                class="absolute top-2 right-2 bg-blue-600 text-xs px-2 py-1 rounded"
+                >4.6 / 5</span
+              >
+            </div>
+
+            <!-- Kartu 4 -->
+            <div
+              class="min-w-[180px] bg-gray-900 rounded-lg text-white relative p-3"
+            >
+              <img
+                src="images/OIP (11).jpg"
+                alt="DayTrans"
+                class="rounded mb-2"
+              />
+              <div class="font-bold">DayTrans</div>
+              <div class="text-sm text-gray-300">Mulai Rp 99.000/pax</div>
+              <span
+                class="absolute top-2 right-2 bg-blue-600 text-xs px-2 py-1 rounded"
+                >4.5 / 5</span
+              >
+            </div>
+
+            <!-- Kartu 5 -->
+            <div
+              class="min-w-[180px] bg-gray-900 rounded-lg text-white relative p-3"
+            >
+              <img
+                src="images/Busonline ticket2.jpg"
+                alt="XTrans"
+                class="rounded mb-2"
+              />
+              <div class="font-bold">XTrans</div>
+              <div class="text-sm text-gray-300">Mulai Rp 85.000/pax</div>
+              <span
+                class="absolute top-2 right-2 bg-blue-600 text-xs px-2 py-1 rounded"
+                >4.4 / 5</span
+              >
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <section class="p-4 md:p-8 bg-gray-100">
+      <h2 class="text-xl font-semibold mb-6">Jadwal Bus Eksekutif</h2>
+
+      <!-- WRAPPER KARTU -->
+      <div class="space-y-4">
+        <!-- KARTU 1 -->
+        <div
+          class="bg-white rounded-lg shadow p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+        >
+          <!-- Kiri -->
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span
+                class="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium"
+                >Bisa Ubah Jadwal</span
+              >
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800">Cititrans</h3>
+            <p class="text-sm text-gray-600 mb-2">
+              Cititrans Eksekutif - Toyota Hiace 8
+            </p>
+
+            <div class="flex items-center gap-4 text-sm text-gray-700 mb-1">
+              <div class="text-center">
+                <p class="font-semibold">09:30</p>
+                <p class="text-xs">Cititrans Kelapa Gading</p>
+              </div>
+              <div class="text-xl">→</div>
+              <div class="text-center">
+                <p class="font-semibold">12:10</p>
+                <p class="text-xs">Cititrans Dipati Ukur</p>
+              </div>
+              <div class="ml-4 text-sm text-gray-500 font-medium">2j 40m</div>
+            </div>
+
+            <!-- Ikon Fasilitas -->
+            <div class="flex items-center space-x-2 mt-2 text-gray-600">
+              <span title="AC">❄️</span>
+              <span title="Toilet">🚻</span>
+              <span title="USB Charger">🔌</span>
+              <span title="Lainnya">+2</span>
+            </div>
+
+            <!-- Link -->
+            <div class="mt-3 space-x-4 text-sm font-medium">
+              <a href="#" class="text-blue-600 hover:underline">Fasilitas</a>
+              <a href="#" class="text-blue-600 hover:underline">Rute</a>
+              <a href="#" class="text-blue-600 hover:underline">Tiket</a>
+            </div>
+          </div>
+
+          <!-- Kanan -->
+          <div class="text-right md:w-40 w-full">
+            <p class="text-orange-600 font-bold text-lg">
+              Rp 165.000
+              <span class="text-sm font-normal text-gray-500">/orang</span>
+            </p>
+            <a
+              href="payment.html"
+              class="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded font-semibold text-center block"
+            >
+              Pesan Sekarang
+            </a>
+
+            <p
+              class="text-sm text-blue-600 mt-2 cursor-pointer hover:underline"
+            >
+              Simpan
+            </p>
+          </div>
+        </div>
+
+        <!-- KARTU 2 -->
+        <div
+          class="bg-white rounded-lg shadow p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+        >
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span
+                class="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium"
+                >Bisa Ubah Jadwal</span
+              >
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800">Cititrans</h3>
+            <p class="text-sm text-gray-600 mb-2">
+              Cititrans Eksekutif - Toyota Hiace 8
+            </p>
+
+            <div class="flex items-center gap-4 text-sm text-gray-700 mb-1">
+              <div class="text-center">
+                <p class="font-semibold">09:30</p>
+                <p class="text-xs">Cititrans Central Park</p>
+              </div>
+              <div class="text-xl">→</div>
+              <div class="text-center">
+                <p class="font-semibold">12:40</p>
+                <p class="text-xs">Cititrans Dipati Ukur</p>
+              </div>
+              <div class="ml-4 text-sm text-gray-500 font-medium">3j 10m</div>
+            </div>
+
+            <div class="flex items-center space-x-2 mt-2 text-gray-600">
+              <span title="AC">❄️</span>
+              <span title="Toilet">🚻</span>
+              <span title="USB Charger">🔌</span>
+              <span title="Lainnya">+2</span>
+            </div>
+
+            <div class="mt-3 space-x-4 text-sm font-medium">
+              <a href="#" class="text-blue-600 hover:underline">Fasilitas</a>
+              <a href="#" class="text-blue-600 hover:underline">Rute</a>
+              <a href="#" class="text-blue-600 hover:underline">Tiket</a>
+            </div>
+          </div>
+
+          <div class="text-right md:w-40 w-full">
+            <p class="text-orange-600 font-bold text-lg">
+              Rp 165.000
+              <span class="text-sm font-normal text-gray-500">/orang</span>
+            </p>
+            <a
+              href="payment.html"
+              class="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded font-semibold text-center block"
+            >
+              Pesan Sekarang
+            </a>
+
+            <p
+              class="text-sm text-blue-600 mt-2 cursor-pointer hover:underline"
+            >
+              Simpan
+            </p>
+          </div>
+        </div>
+
+        <!-- KARTU 3 -->
+        <div
+          class="bg-white rounded-lg shadow p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+        >
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span
+                class="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium"
+                >Bisa Ubah Jadwal</span
+              >
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800">Jackal Holidays</h3>
+            <p class="text-sm text-gray-600 mb-2">
+              Eksekutif Class - Elf Long Chassis
+            </p>
+
+            <div class="flex items-center gap-4 text-sm text-gray-700 mb-1">
+              <div class="text-center">
+                <p class="font-semibold">08:00</p>
+                <p class="text-xs">Jackal Blok M</p>
+              </div>
+              <div class="text-xl">→</div>
+              <div class="text-center">
+                <p class="font-semibold">10:45</p>
+                <p class="text-xs">Jackal Dago</p>
+              </div>
+              <div class="ml-4 text-sm text-gray-500 font-medium">2j 45m</div>
+            </div>
+
+            <div class="flex items-center space-x-2 mt-2 text-gray-600">
+              <span title="AC">❄️</span>
+              <span title="WiFi">📶</span>
+              <span title="USB Charger">🔌</span>
+              <span title="Makanan">🍱</span>
+            </div>
+
+            <div class="mt-3 space-x-4 text-sm font-medium">
+              <a href="#" class="text-blue-600 hover:underline">Fasilitas</a>
+              <a href="#" class="text-blue-600 hover:underline">Rute</a>
+              <a href="#" class="text-blue-600 hover:underline">Tiket</a>
+            </div>
+          </div>
+
+          <div class="text-right md:w-40 w-full">
+            <p class="text-orange-600 font-bold text-lg">
+              Rp 150.000
+              <span class="text-sm font-normal text-gray-500">/orang</span>
+            </p>
+            <a
+              href="payment.html"
+              class="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded font-semibold text-center block"
+            >
+              Pesan Sekarang
+            </a>
+
+            <p
+              class="text-sm text-blue-600 mt-2 cursor-pointer hover:underline"
+            >
+              Simpan
+            </p>
+          </div>
+        </div>
+
+        <!-- KARTU 4 -->
+        <div
+          class="bg-white rounded-lg shadow p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+        >
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span
+                class="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium"
+                >Bisa Ubah Jadwal</span
+              >
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800">XTrans</h3>
+            <p class="text-sm text-gray-600 mb-2">
+              Premium Shuttle - Toyota Hiace 10
+            </p>
+
+            <div class="flex items-center gap-4 text-sm text-gray-700 mb-1">
+              <div class="text-center">
+                <p class="font-semibold">13:15</p>
+                <p class="text-xs">XTrans Cibubur</p>
+              </div>
+              <div class="text-xl">→</div>
+              <div class="text-center">
+                <p class="font-semibold">15:55</p>
+                <p class="text-xs">XTrans Cihampelas</p>
+              </div>
+              <div class="ml-4 text-sm text-gray-500 font-medium">2j 40m</div>
+            </div>
+
+            <div class="flex items-center space-x-2 mt-2 text-gray-600">
+              <span title="AC">❄️</span>
+              <span title="Toilet">🚻</span>
+              <span title="Bantal Selimut">🛌</span>
+              <span title="Lainnya">+3</span>
+            </div>
+
+            <div class="mt-3 space-x-4 text-sm font-medium">
+              <a href="#" class="text-blue-600 hover:underline">Fasilitas</a>
+              <a href="#" class="text-blue-600 hover:underline">Rute</a>
+              <a href="#" class="text-blue-600 hover:underline">Tiket</a>
+            </div>
+          </div>
+
+          <div class="text-right md:w-40 w-full">
+            <p class="text-orange-600 font-bold text-lg">
+              Rp 140.000
+              <span class="text-sm font-normal text-gray-500">/orang</span>
+            </p>
+            <a
+              href="payment.html"
+              class="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded font-semibold text-center block"
+            >
+              Pesan Sekarang
+            </a>
+
+            <p
+              class="text-sm text-blue-600 mt-2 cursor-pointer hover:underline"
+            >
+              Simpan
+            </p>
+          </div>
+        </div>
+
+        <!-- KARTU 5 -->
+        <div
+          class="bg-white rounded-lg shadow p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+        >
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span
+                class="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium"
+                >Bisa Ubah Jadwal</span
+              >
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800">Baraya Travel</h3>
+            <p class="text-sm text-gray-600 mb-2">
+              Baraya Eksekutif - Isuzu Elf 9
+            </p>
+
+            <div class="flex items-center gap-4 text-sm text-gray-700 mb-1">
+              <div class="text-center">
+                <p class="font-semibold">10:00</p>
+                <p class="text-xs">Baraya Tebet</p>
+              </div>
+              <div class="text-xl">→</div>
+              <div class="text-center">
+                <p class="font-semibold">13:00</p>
+                <p class="text-xs">Baraya Bandung Dago</p>
+              </div>
+              <div class="ml-4 text-sm text-gray-500 font-medium">3j 00m</div>
+            </div>
+
+            <div class="flex items-center space-x-2 mt-2 text-gray-600">
+              <span title="AC">❄️</span>
+              <span title="Snack">🍪</span>
+              <span title="Listrik">🔋</span>
+              <span title="Lainnya">+1</span>
+            </div>
+
+            <div class="mt-3 space-x-4 text-sm font-medium">
+              <a href="#" class="text-blue-600 hover:underline">Fasilitas</a>
+              <a href="#" class="text-blue-600 hover:underline">Rute</a>
+              <a href="#" class="text-blue-600 hover:underline">Tiket</a>
+            </div>
+          </div>
+
+          <div class="text-right md:w-40 w-full">
+            <p class="text-orange-600 font-bold text-lg">
+              Rp 120.000
+              <span class="text-sm font-normal text-gray-500">/orang</span>
+            </p>
+            <a
+              href="payment.html"
+              class="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded font-semibold text-center block"
+            >
+              Pesan Sekarang
+            </a>
+
+            <p
+              class="text-sm text-blue-600 mt-2 cursor-pointer hover:underline"
+            >
+              Simpan
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer with Social Media -->
+    <footer class="bg-gray-800 text-white py-10 mt-10">
+      <div
+        class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-5 gap-6 text-sm"
+      >
+        <div>
+          <h5 class="font-semibold mb-3">Produk</h5>
+          <ul class="space-y-1">
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Tiket Pesawat</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Hotel</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >To Do</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Rental Mobil</a
+              >
+            </li>
+            <!-- <li><a href="#" class="hover:text-blue-300 smooth-transition">Event</a></li> -->
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Xperience</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Kres-Nova PayLater</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3">Perusahaan</h5>
+          <ul class="space-y-1">
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Tentang Kami</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Karir</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition">Blog</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Pusat Media</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Kres-Nova Partners</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Kres-Nova Ads</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3">Dukungan</h5>
+          <ul class="space-y-1">
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Pusat Bantuan</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Syarat & Ketentuan</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Kebijakan Privasi</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Daftarkan Hotel Anda</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Daftarkan Bisnis Anda</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Kres-Nova Affiliate</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3">Hubungi Kami</h5>
+          <ul class="space-y-1">
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Support Center</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >+62 856-1375-843</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >cs@Kres-Nova.com</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3">Ikuti Kami</h5>
+          <div class="flex space-x-3 mb-4">
+            <a
+              href="#"
+              class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-500 smooth-transition"
+            >
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a
+              href="#"
+              class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-300 smooth-transition"
+            >
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a
+              href="#"
+              class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-500 smooth-transition"
+            >
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a
+              href="#"
+              class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-500 smooth-transition"
+            >
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+          <h5 class="font-semibold mb-3">Unduh Aplikasi</h5>
+          <div class="space-y-2">
+            <a href="#" class="block">
+              <img
+                src="https://images.seeklogo.com/logo-png/32/2/appstore-logo-png_seeklogo-326280.png"
+                alt="App Store"
+                class="h-10"
+              />
+            </a>
+            <a href="#" class="block">
+              <img
+                src="https://images.seeklogo.com/logo-png/31/2/google-play-logo-png_seeklogo-318439.png"
+                alt="Google Play"
+                class="h-10"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-6xl mx-auto px-4 mt-8 pt-6 border-t border-gray-700">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="text-gray-400 text-xs mb-4 md:mb-0">
+            © 2025 Kres-Nova. Seluruh hak cipta dilindungi.
+          </div>
+          <div class="flex space-x-4">
+            <img
+              src="https://images.seeklogo.com/logo-png/23/2/bca-bank-logo-png_seeklogo-232742.png"
+              alt="Payment"
+              class="h-20"
+            />
+            <img
+              src="https://images.seeklogo.com/logo-png/39/2/dana-e-wallet-app-logo-png_seeklogo-399948.png"
+              alt="Payment"
+              class="h-20"
+            />
+            <img
+              src="https://images.seeklogo.com/logo-png/45/2/bank-bri-logo-png_seeklogo-459990.png"
+              alt="Payment"
+              class="h-16"
+            />
+            <img
+              src="https://images.seeklogo.com/logo-png/1/2/bank-mandiri-logo-png_seeklogo-16290.png"
+              alt="Payment"
+              class="h-16"
+            />
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

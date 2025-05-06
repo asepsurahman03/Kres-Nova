@@ -1,0 +1,2737 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kres-Nova - Tiket Pesawat Murah & Promo Hotel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+  <style>
+    html {
+  scroll-behavior: smooth;
+}
+
+      /* Animasi untuk dropdown */
+  .dropdown-menu {
+    transition: all 0.3s ease;
+  }
+  
+  .smooth-transition {
+    transition: all 0.2s ease;
+  }
+    .smooth-transition {
+      transition: all 0.3s ease;
+    }
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+    .promo-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .loading-spinner {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    /* Tambahkan ini di bagian style */
+.promo-slider-container {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  height: 200px; /* Sesuaikan tinggi sesuai kebutuhan */
+}
+
+.promo-slider-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 100%;
+}
+
+.promo-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slider-nav {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.5);
+  cursor: pointer;
+}
+
+.slider-dot.active {
+  background-color: white;
+}
+
+/* Styling untuk tab yang aktif */
+.tab.active {
+  background-color: white;
+  color: blue;
+  border-bottom: 2px solid blue;
+}
+
+/* Styling untuk konten tab */
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+  .swiper-button-prev-custom,
+  .swiper-button-next-custom {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .swiper-button-prev-custom:hover,
+  .swiper-button-next-custom:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .swiper-button-prev-custom {
+    left: -10px; /* bisa disesuaikan */
+  }
+
+  .swiper-button-next-custom {
+    right: -10px; /* bisa disesuaikan */
+  }
+
+.swiper-button-prev-custom,
+.swiper-button-next-custom {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.3s ease;
+}
+
+.swiper-button-prev-custom {
+  left: -20px;
+}
+
+.swiper-button-next-custom {
+  right: -20px;
+}
+
+.swiper-button-prev-custom:hover,
+.swiper-button-next-custom:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.slider-dot.active {
+  background-color: #f43f5e; /* contoh: merah muda, kamu bisa sesuaikan */
+}
+
+</style>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+  <section class="relative bg-cover bg-center h-screen" style="background-image: url('images/background.jpg');">
+  <!-- Header with Smooth Scroll Links -->
+  <header id="main-header" class="bg-white/30 backdrop-blur-md shadow-md sticky top-0 z-50 transition duration-300">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center">
+        <img src="LogoKN1.png" alt="Logo Kres-Nova" class="h-8 w-8 mr-2 object-contain">
+        <p class="font-montserrat font-bold text-2xl text-white" style="font-family: 'Montserrat', sans-serif">
+          Kres-Nova
+        </p>
+      </a>
+  
+      <!-- Nav Desktop -->
+      <nav class="hidden md:flex space-x-6 text-sm font-medium">
+        <a href="#pesawat-section" class="text-white hover:text-blue-300">Tiket Pesawat</a>
+        <a href="#hotel-section" class="text-white hover:text-blue-300">Hotel</a>
+        <a href="bantuan.html" class="text-white hover:text-blue-300">Butuh Bantuan?</a>
+  
+        <!-- Dropdown Desktop -->
+        <div class="relative" id="dropdown-pesanan-wrapper">
+          <button id="dropdown-pesanan-btn" class="text-white hover:text-blue-300 flex items-center">
+            Pesanan <i class="fas fa-chevron-down ml-1 text-xs"></i>
+          </button>
+          <div id="dropdown-pesanan-menu" class="absolute hidden bg-white text-black rounded shadow-lg mt-2 w-48 py-2 z-50">
+            <a href="wishlist.html" class="block px-4 py-2 hover:bg-gray-100">Wishlist</a>
+            <a href="history.html" class="block px-4 py-2 hover:bg-gray-100">Histori Pesanan</a>
+            <a href="favorit.html" class="block px-4 py-2 hover:bg-gray-100">Item Favorit</a>
+          </div>
+        </div>
+        
+      </nav>
+  
+      <!-- Language + Login + Daftar (Desktop) -->
+      <div class="hidden md:flex space-x-3 items-center">
+        <!-- Language Dropdown -->
+        <div class="relative group">
+          <button class="text-white hover:text-blue-300">
+            <i class="fas fa-globe mr-1"></i> ID
+          </button>
+          <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-2 py-2 w-32 right-0 z-50">
+            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Indonesia</a>
+            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">English</a>
+          </div>
+        </div>
+  
+        <a href="logincoba.html" class="border border-white text-white px-4 py-1.5 rounded text-sm hover:bg-white hover:text-blue-500 transition">Masuk</a>
+        <a href="singup.html" class="bg-blue-500 text-white px-4 py-1.5 rounded text-sm hover:bg-blue-600 transition">Daftar</a>
+      </div>
+  
+      <!-- Burger Button (Mobile) -->
+      <button id="burger" class="md:hidden text-white text-2xl focus:outline-none">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  
+    <!-- Mobile Slide Menu -->
+    <div id="mobile-menu" class="fixed top-0 left-0 w-full bg-black text-white transform -translate-y-full transition-all duration-300 ease-in-out z-50 shadow-lg overflow-y-auto">
+
+      <div class="p-4 flex justify-between items-center border-b border-gray-600">
+        <p class="text-lg font-semibold">Menu</p>
+        <button id="close-mobile-menu" class="text-xl text-white">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="px-4 py-2">
+        <a href="#pesawat-section" class="block py-2 hover:text-blue-500">Tiket Pesawat</a>
+        <a href="#hotel-section" class="block py-2 hover:text-blue-500">Hotel</a>
+        <a href="bantuan.html" class="block py-2 hover:text-blue-500">Butuh Bantuan?</a>
+
+        <div class="pt-2">
+          <p class="font-semibold mb-1">Pesanan</p>
+          <a href="wishlist.html" class="block px-2 py-1 hover:bg-gray-700 rounded">Wishlist</a>
+          <a href="history.html" class="block px-2 py-1 hover:bg-gray-700 rounded">Histori Pesanan</a>
+          <a href="favorit.html" class="block px-2 py-1 hover:bg-gray-700 rounded">Item Favorit</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search Section with Autocomplete -->
+  <section class="text-white py-10" style="background-image: url('images/background.jpg'); background-size: cover; background-position: center;">
+    <div class="max-w-6xl mx-auto px-4">
+      
+      <!-- Menu Tab Responsif -->
+      <div class="flex flex-wrap justify-center sm:justify-start gap-2 mb-6" id="tab-menu">
+        <div class="tab px-3 py-2 border border-white text-white rounded-md font-medium cursor-pointer hover:bg-white hover:text-blue-500 transition-all duration-200 text-sm sm:text-base" data-tab="pesawat">Pesawat</div>
+        <div class="tab px-3 py-2 border border-white text-white rounded-md cursor-pointer hover:bg-white hover:text-blue-500 transition-all duration-200 text-sm sm:text-base" data-tab="hotel">Hotel</div>
+        <div class="tab px-3 py-2 border border-white text-white rounded-md cursor-pointer hover:bg-white hover:text-blue-500 transition-all duration-200 text-sm sm:text-base" data-tab="mobil">Rental Mobil</div>
+        <div class="tab px-3 py-2 border border-white text-white rounded-md cursor-pointer hover:bg-white hover:text-blue-500 transition-all duration-200 text-sm sm:text-base" data-tab="bus">Tiket Bus</div>
+        <div class="tab px-3 py-2 border border-white text-white rounded-md cursor-pointer hover:bg-white hover:text-blue-500 transition-all duration-200 text-sm sm:text-base" data-tab="kereta">Tiket Kereta</div>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+
+        <div id="pesawat" class="tab-pane hidden">
+          <h2 class="text-xl sm:text-2xl font-semibold">Tiket Pesawat</h2>
+          <p class="text-sm sm:text-base">Pesan tiket pesawatmu disini</p>
+            
+            <!-- Button Dropdowns untuk Penumpang dan Kelas -->
+            <div class="flex flex-col md:flex-row justify-end gap-4 mt-4">
+              <!-- Dropdown Penumpang -->
+              <div class="relative w-full md:w-auto dropdown-penumpang">
+                <button id="dropdown-pax" class="flex items-center justify-between w-full md:w-auto gap-2 px-4 py-2 bg-gray-500 text-white border border-white rounded-md text-sm sm:text-base">
+                  Penumpang
+                  <svg class="w-4 h-4 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+                  </svg>
+                </button>
+
+          <!-- Dropdown untuk Penumpang -->
+          <div id="pax-dropdown" class="absolute z-50 hidden bg-white text-black border rounded-md w-64 mt-2 shadow-lg">
+
+            <!-- Dewasa -->
+            <div class="p-3 flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-user text-gray-700"></i>
+                  <span class="font-semibold">Dewasa</span>
+                </div>
+                <small class="text-gray-500 text-sm">Usia 12 tahun ke atas</small>
+              </div>
+              <div class="flex items-center gap-2">
+                <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="minus-dewasa">-</button>
+                <input id="dewasa" class="w-12 text-center p-2 border rounded-md" type="number" value="1" min="0">
+                <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="plus-dewasa">+</button>
+              </div>
+            </div>
+
+        <!-- Anak-anak -->
+        <div class="p-3 flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-child text-yellow-600"></i>
+              <span class="font-semibold">Anak-anak</span>
+            </div>
+            <small class="text-gray-500 text-sm">Usia 2 - 11 tahun</small>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="minus-anak-anak">-</button>
+            <input id="anak-anak" class="w-12 text-center p-2 border rounded-md" type="number" value="0" min="0">
+            <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="plus-anak-anak">+</button>
+          </div>
+        </div>
+
+        <!-- Bayi -->
+        <div class="p-3 flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <i class="fas fa-baby text-pink-500"></i>
+              <span class="font-semibold">Bayi</span>
+            </div>
+            <small class="text-gray-500 text-sm">Usia di bawah 2 tahun</small>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="minus-bayi">-</button>
+            <input id="bayi" class="w-12 text-center p-2 border rounded-md" type="number" value="0" min="0">
+            <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="plus-bayi">+</button>
+          </div>
+        </div>
+
+        <!-- Tombol Selesai -->
+        <div class="p-3 border-t text-right">
+          <button type="button" id="selesai" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+            Selesai
+          </button>
+        </div>
+      </div>
+      </div>
+
+        <!-- Dropdown untuk Kelas -->
+        <div class="relative w-full md:w-auto dropdown-kelas">
+          <button id="dropdown-class" class="flex items-center justify-between gap-2 px-4 py-2 bg-gray-500 text-white border border-white rounded-md w-full md:w-48 text-sm sm:text-base">
+            Kelas Ekonomi
+            <svg class="w-4 h-4 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+            </svg>
+          </button>
+
+            <!-- Dropdown item muncul saat diklik -->
+            <div id="class-dropdown" class="dropdown-menu-kelas absolute hidden bg-white text-black border rounded-md w-48 mt-2 shadow-lg z-10">
+              <button class="w-full text-left px-4 py-2 hover:bg-gray-200" data-value="ekonomi">Ekonomi</button>
+              <button class="w-full text-left px-4 py-2 hover:bg-gray-200" data-value="premium">Premium</button>
+              <button class="w-full text-left px-4 py-2 hover:bg-gray-200" data-value="bisnis">Bisnis</button>
+              <button class="w-full text-left px-4 py-2 hover:bg-gray-200" data-value="first-class">First Class</button>
+            </div>
+          </div>
+        </div>
+        <!-- 4 Buttons: Dari, Ke, Berangkat, Kembali -->
+        <div class="flex flex-col md:flex-row justify-center gap-4 sm:gap-8 mt-6">
+            <div class="relative w-full sm:w-64 dropdown-dari">
+              <label class="block text-center text-white mb-2 text-sm">Dari</label>
+                <button id="dropdown-dari" class="flex items-center justify-between px-4 py-3 bg-gray-500 text-white border border-white rounded-md w-full text-sm">
+                      Pilih Kota Asal
+                  <svg class="w-4 h-4 fill-current text-white ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+                  </svg>
+                </button>
+
+                    <div id="dropdown-menu-dari-pesawat" class="dropdown-menu-dari-pesawat absolute hidden bg-white text-black border rounded-md w-full mt-2 shadow-lg z-10">
+                        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Jakarta | Soekarno Hatta</button>
+                        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Juanda | Surabaya</button>
+                        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Kualanamu | Medan)</button>
+                        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Bali | Ngurah Rai</button>
+                        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Changi Intl | Singapura</button>
+                        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Kuala Lumpur | Malaysia</button>
+                        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Bangkok | Thailand</button>
+                        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Tokyo | Jepang</button>
+                  </div>
+          </div>
+
+          <!-- Dropdown Ke -->
+          <div class="relative w-60 dropdown-ke">
+            <label class="block text-center text-white mb-2">Ke</label>
+            <button id="dropdown-ke" class="flex items-center justify-between px-4 py-3 bg-gray-500 text-white border border-white rounded-md w-full">
+              Pilih Kota Tujuan
+              <svg class="w-4 h-4 fill-current text-white ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+              </svg>
+            </button>
+            <div id="dropdown-menu-ke-pesawat" class="dropdown-menu-ke-pesawat absolute hidden bg-white text-black border rounded-md w-full mt-2 shadow-lg z-10">
+                <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Jakarta | Soekarno Hatta</button>
+                <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Juanda | Surabaya</button>
+                <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Kualanamu | Medan)</button>
+                <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Bali | Ngurah Rai</button>
+                <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Changi Intl | Singapura</button>
+                <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Kuala Lumpur | Malaysia</button>
+                <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Bangkok | Thailand</button>
+                <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Tokyo | Jepang</button>
+            </div>
+          </div>
+
+          <!-- Tanggal Berangkat -->
+          <div class="w-60">
+            <label class="block text-center text-white mb-2">Tanggal Berangkat</label>
+            <input type="date" class="w-full px-4 py-3 border border-white rounded-md bg-gray-500 text-white" placeholder="Tanggal Berangkat">
+          </div>
+
+          <!-- Tanggal Kembali -->
+          <div class="w-60">
+            <label class="block text-center text-white mb-2">Tanggal Kembali</label>
+            <input type="date" class="w-full px-4 py-3 border border-white rounded-md bg-gray-500 text-white" placeholder="Tanggal Kembali">
+          </div>
+
+        </div>
+        <!-- Tombol Cari Tiket Pesawat -->
+        <div class="flex justify-center mt-8">
+          <button id="cari-tiket" class="flex items-center gap-2 px-6 py-3 border border-white rounded-md bg-orange-500 text-white" disabled onclick="window.location.href='pesawat.html';">
+            <!-- Icon Search yang lebih bagus -->
+            <svg class="w-5 h-5 stroke-current text-white" fill="none" stroke-width="1.5" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z">
+              </path>
+            </svg>
+            Cari Tiket Pesawat
+          </button>
+        </div>
+
+    </div>
+  </div>
+
+  <script> 
+   function setupDropdown(buttonId, menuId) {
+    const btn = document.getElementById(buttonId);
+    const menu = document.getElementById(menuId);
+    btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+    menu.querySelectorAll('button').forEach(item => {
+      item.addEventListener('click', () => {
+        btn.innerHTML = `${item.textContent}
+          <svg class="w-4 h-4 fill-current text-white ml-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+          </svg>`;
+        menu.classList.add('hidden');
+      });
+    });
+  }
+
+  setupDropdown('dropdown-dari', 'dropdown-menu-dari-pesawat');
+setupDropdown('dropdown-ke', 'dropdown-menu-ke-pesawat');
+
+  // Fungsi untuk memeriksa apakah semua input sudah terisi
+  function isFormValid() {
+    const dari = document.querySelector("#dropdown-dari").textContent.trim();
+    const ke = document.querySelector("#dropdown-ke").textContent.trim();
+    const berangkat = document.querySelector("input[type='date'][placeholder='Tanggal Berangkat']").value;
+    const kembali = document.querySelector("input[type='date'][placeholder='Tanggal Kembali']").value;
+    const dewasa = document.querySelector("#dewasa").value;
+    const anak = document.querySelector("#anak-anak").value;
+    const bayi = document.querySelector("#bayi").value;
+
+    // Pastikan semua input telah diisi
+    return dari !== "Pilih Kota Asal" &&
+           ke !== "Pilih Kota Tujuan" &&
+           berangkat !== "" &&
+           kembali !== "" &&
+           dewasa > 0 && anak >= 0 && bayi >= 0;
+  }
+
+  // Fungsi untuk mengaktifkan tombol jika form valid
+  function toggleSearchButton() {
+    const button = document.getElementById("cari-tiket");
+    if (isFormValid()) {
+      button.disabled = false;
+      button.addEventListener('click', function() {
+        window.location.href = 'pesawat.html';  // Arahkan ke pesawat.html jika tombol valid
+      });
+    } else {
+      button.disabled = true;
+    }
+  }
+
+  // Event listener untuk dropdown dan input lainnya
+  document.querySelector("#dropdown-dari").addEventListener("click", toggleSearchButton);
+  document.querySelector("#dropdown-ke").addEventListener("click", toggleSearchButton);
+  document.querySelector("input[type='date'][placeholder='Tanggal Berangkat']").addEventListener("input", toggleSearchButton);
+  document.querySelector("input[type='date'][placeholder='Tanggal Kembali']").addEventListener("input", toggleSearchButton);
+  document.querySelector("#dewasa").addEventListener("input", toggleSearchButton);
+  document.querySelector("#anak-anak").addEventListener("input", toggleSearchButton);
+  document.querySelector("#bayi").addEventListener("input", toggleSearchButton);
+  </script>
+
+
+
+
+
+
+
+
+  <div id="hotel" class="tab-pane hidden">
+    <h2 class="text-xl sm:text-2xl font-semibold">Hotel Section</h2>
+    <p class="text-sm sm:text-base">Temukan hotel nyaman sesuai kebutuhanmu.</p>
+  
+    <!-- Form Row -->
+    <div class="flex flex-wrap justify-between gap-4 mb-8">
+  
+      <!-- Lokasi Hotel -->
+      <div class="relative w-full sm:w-64">
+        <label class="block text-center text-white mb-2 text-sm">Lokasi Hotel</label>
+        <button id="dropdown-lokasi-hotel" class="flex items-center justify-between px-4 py-3 bg-gray-500 text-white border border-white rounded-md w-full text-sm">
+          Pilih Lokasi
+          <svg class="w-4 h-4 ml-2" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+          </svg>
+        </button>
+        <div id="dropdown-menu-lokasi-hotel" class="absolute hidden bg-white text-black border rounded-md w-full mt-2 shadow-lg z-10">
+          <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Jakarta</button>
+          <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Bandung</button>
+          <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Surabaya</button>
+          <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Bali</button>
+        </div>
+      </div>
+  
+      <!-- Check-in -->
+      <div class="w-full sm:w-64">
+        <label class="block text-center text-white mb-2 text-sm">Check-In</label>
+        <input type="date" class="w-full px-4 py-3 border border-white rounded-md bg-gray-500 text-white">
+      </div>
+  
+      <!-- Check-out -->
+      <div class="w-full sm:w-64">
+        <label class="block text-center text-white mb-2 text-sm">Check-Out</label>
+        <input type="date" class="w-full px-4 py-3 border border-white rounded-md bg-gray-500 text-white">
+      </div>
+  
+      <!-- Dropdown Tamu dan Kamar -->
+      <div class="relative w-full md:w-auto">
+        <button id="dropdown-tamu-kamar" class="flex items-center justify-between w-full md:w-auto gap-2 px-4 py-2 bg-gray-500 text-white border border-white rounded-md text-sm sm:text-base">
+          Tamu & Kamar
+          <svg class="w-4 h-4 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+          </svg>
+        </button>
+  
+        <div id="tamu-kamar-dropdown" class="absolute z-50 hidden bg-white text-black border rounded-md w-64 mt-2 shadow-lg">
+  
+          <!-- Tamu -->
+          <div class="p-3 flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-user-friends text-gray-700"></i>
+                <span class="font-semibold">Tamu</span>
+              </div>
+              <small class="text-gray-500 text-sm">Jumlah semua tamu</small>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="minus-tamu">-</button>
+              <input id="jumlah-tamu" class="w-12 text-center p-2 border rounded-md" type="number" value="2" min="1">
+              <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="plus-tamu">+</button>
+            </div>
+          </div>
+  
+          <!-- Kamar -->
+          <div class="p-3 flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-bed text-blue-500"></i>
+                <span class="font-semibold">Kamar</span>
+              </div>
+              <small class="text-gray-500 text-sm">Jumlah kamar dibutuhkan</small>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="minus-kamar">-</button>
+              <input id="jumlah-kamar" class="w-12 text-center p-2 border rounded-md" type="number" value="1" min="1">
+              <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="plus-kamar">+</button>
+            </div>
+          </div>
+  
+          <!-- Tombol Selesai -->
+          <div class="p-3 border-t text-right">
+            <button type="button" id="selesai-hotel" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+              Selesai
+            </button>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+<!-- Tombol Cari Hotel -->
+<div class="flex justify-center gap-4 mt-8">
+  <button id="cari-hotel-btn" class="flex items-center gap-2 px-6 py-3 border border-white rounded-md bg-orange-600 text-white">
+    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M14.793 13.793a7 7 0 111.414-1.414l3.296 3.296a1 1 0 11-1.414 1.414l-3.296-3.296zM15 7a5 5 0 10-10 0 5 5 0 0010 0z" />
+    </svg>
+    Cari Hotel
+  </button>
+</div>
+  </div>
+
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const btnTamuKamar = document.getElementById('dropdown-tamu-kamar');
+      const menuTamuKamar = document.getElementById('tamu-kamar-dropdown');
+      const inputTamu = document.getElementById('jumlah-tamu');
+      const inputKamar = document.getElementById('jumlah-kamar');
+  
+      btnTamuKamar.addEventListener('click', function (e) {
+        e.stopPropagation();
+        menuTamuKamar.classList.toggle('hidden');
+      });
+  
+      document.addEventListener('click', function (e) {
+        if (!menuTamuKamar.contains(e.target) && !btnTamuKamar.contains(e.target)) {
+          menuTamuKamar.classList.add('hidden');
+        }
+      });
+  
+      // Tamu
+      document.getElementById('plus-tamu').addEventListener('click', () => inputTamu.value++);
+      document.getElementById('minus-tamu').addEventListener('click', () => {
+        if (inputTamu.value > 1) inputTamu.value--;
+      });
+  
+      // Kamar
+      document.getElementById('plus-kamar').addEventListener('click', () => inputKamar.value++);
+      document.getElementById('minus-kamar').addEventListener('click', () => {
+        if (inputKamar.value > 1) inputKamar.value--;
+      });
+  
+      document.getElementById('selesai-hotel').addEventListener('click', () => {
+        btnTamuKamar.innerHTML = 
+          `${inputTamu.value} Tamu, ${inputKamar.value} Kamar
+          <svg class="w-4 h-4 fill-current text-white ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+          </svg>`;
+        menuTamuKamar.classList.add('hidden');
+      });
+  
+      setupDropdown('dropdown-lokasi-hotel', 'dropdown-menu-lokasi-hotel');
+    });
+
+    // Menunggu halaman dimuat
+  document.addEventListener('DOMContentLoaded', function () {
+    // Mendapatkan tombol "Cari Hotel"
+    const cariHotelBtn = document.getElementById('cari-hotel-btn');
+
+    // Menambahkan event listener klik
+    cariHotelBtn.addEventListener('click', function() {
+      // Arahkan ke file 'hotel.html' saat tombol diklik
+      window.location.href = 'hotel.html';
+    });
+  });
+  </script>
+    
+
+
+  
+
+
+
+        
+<!-- Tombol Pilihan -->
+
+<!-- Tab Rental Mobil -->
+<div id="mobil" class="tab-pane hidden">
+  <h2 class="text-xl sm:text-2xl font-semibold">Rental Mobil</h2>
+  <p class="text-sm sm:text-base">Sewa mobil sesuai kebutuhanmu.</p>
+
+  <!-- Tombol Pilihan Sewa -->
+  <div class="flex justify-start gap-4 mt-4">
+    <!-- Tombol Tanpa Pengemudi -->
+    <button id="tanpa-pengemudi" class="px-6 py-3 border border-white rounded-md bg-gray-500 text-white">
+      Tanpa Pengemudi
+    </button>
+    <!-- Tombol Dengan Pengemudi -->
+    <button id="dengan-pengemudi" class="px-6 py-3 border border-white rounded-md bg-gray-500 text-white">
+      Dengan Pengemudi
+    </button>
+  </div>
+
+  <!-- Form Rental Mobil Tanpa Pengemudi -->
+  <div id="tanpa-pengemudi-form" class="flex flex-col md:flex-row justify-center gap-4 mt-6 flex-wrap hidden">
+    <!-- Lokasi Sewa -->
+    <div class="relative w-full sm:w-64">
+      <label class="block text-white mb-2 text-sm text-center sm:text-left">Lokasi Sewa</label>
+      <div class="flex items-center border border-white rounded-md bg-gray-500 text-white">
+        <span class="px-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4.5 8-10a8 8 0 10-16 0c0 5.5 8 10 8 10z" />
+          </svg>
+        </span>
+        <select class="w-full px-2 py-3 bg-gray-500 text-white text-sm focus:outline-none">
+          <option selected disabled>Pilih Lokasi</option>
+          <option>Jakarta</option>
+          <option>Bandung</option>
+          <option>Surabaya</option>
+          <option>Yogyakarta</option>
+          <option>Bali</option>
+        </select>
+      </div>
+    </div>
+    <!-- Tanggal Mulai Sewa -->
+    <div class="relative w-full sm:w-48">
+      <label class="block text-white mb-2 text-sm text-center sm:text-left">Tanggal Mulai</label>
+      <input type="date" class="w-full px-4 py-3 rounded-md border border-white bg-gray-500 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+    </div>
+    <!-- Waktu Mulai Sewa -->
+    <div class="relative w-full sm:w-48">
+      <label class="block text-white mb-2 text-sm text-center sm:text-left">Waktu Mulai</label>
+      <input type="time" class="w-full px-4 py-3 rounded-md border border-white bg-gray-500 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+    </div>
+    <!-- Tanggal Selesai Sewa -->
+    <div class="relative w-full sm:w-48">
+      <label class="block text-white mb-2 text-sm text-center sm:text-left">Tanggal Selesai</label>
+      <input type="date" class="w-full px-4 py-3 rounded-md border border-white bg-gray-500 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+    </div>
+    <!-- Waktu Selesai Sewa -->
+    <div class="relative w-full sm:w-48">
+      <label class="block text-white mb-2 text-sm text-center sm:text-left">Waktu Selesai</label>
+      <input type="time" class="w-full px-4 py-3 rounded-md border border-white bg-gray-500 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+    </div>
+  </div>
+
+  <!-- Form Rental Mobil Dengan Pengemudi -->
+  <div id="dengan-pengemudi-form" class="hidden flex flex-col md:flex-row justify-center gap-4 mt-6 flex-wrap">
+    <!-- Lokasi Sewa -->
+    <div class="relative w-full sm:w-64">
+      <label class="block text-white mb-2 text-sm text-center sm:text-left">Lokasi Sewa</label>
+      <div class="flex items-center border border-white rounded-md bg-gray-500 text-white">
+        <span class="px-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4.5 8-10a8 8 0 10-16 0c0 5.5 8 10 8 10z" />
+          </svg>
+        </span>
+        <select class="w-full px-2 py-3 bg-gray-500 text-white text-sm focus:outline-none">
+          <option selected disabled>Pilih Lokasi</option>
+          <option>Jakarta</option>
+          <option>Bandung</option>
+          <option>Surabaya</option>
+          <option>Yogyakarta</option>
+          <option>Bali</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tanggal Sewa -->
+    <div class="relative w-full sm:w-48">
+      <label class="block text-white mb-2 text-sm text-center sm:text-left">Tanggal Sewa</label>
+      <input type="date" class="w-full px-4 py-3 rounded-md border border-white bg-gray-500 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+    </div>
+
+    <!-- Durasi Sewa -->
+    <div class="relative w-full sm:w-48">
+      <label class="block text-white mb-2 text-sm text-center sm:text-left">Durasi Sewa</label>
+      <select class="w-full px-4 py-3 rounded-md border border-white bg-gray-500 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <option selected disabled>Pilih Durasi</option>
+        <option>1 Hari</option>
+        <option>2 Hari</option>
+        <option>3 Hari</option>
+        <option>4 Hari</option>
+      </select>
+    </div>
+
+    <!-- Waktu Penjemputan -->
+    <div class="relative w-full sm:w-48">
+      <label class="block text-white mb-2 text-sm text-center sm:text-left">Waktu Penjemputan</label>
+      <input type="time" class="w-full px-4 py-3 rounded-md border border-white bg-gray-500 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+    </div>
+  </div>
+
+  <!-- Tombol Cari Mobil -->
+  <div class="flex justify-center mt-8">
+    <button id="cari-mobil" class="flex items-center gap-2 px-6 py-3 border border-white rounded-md bg-orange-500 text-white">
+      <!-- Icon Search -->
+      <svg class="w-5 h-5 stroke-current text-white" fill="none" stroke-width="1.5" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z">
+        </path>
+      </svg>
+      Cari Mobil
+    </button>
+  </div>
+</div>
+
+<script>
+  document.getElementById('tanpa-pengemudi').addEventListener('click', function() {
+    document.getElementById('tanpa-pengemudi-form').classList.remove('hidden');
+    document.getElementById('dengan-pengemudi-form').classList.add('hidden');
+  });
+
+  document.getElementById('dengan-pengemudi').addEventListener('click', function() {
+    document.getElementById('dengan-pengemudi-form').classList.remove('hidden');
+    document.getElementById('tanpa-pengemudi-form').classList.add('hidden');
+  });
+
+
+  // Toggle form pengemudi
+  document.getElementById('tanpa-pengemudi').addEventListener('click', function() {
+    document.getElementById('tanpa-pengemudi-form').classList.remove('hidden');
+    document.getElementById('dengan-pengemudi-form').classList.add('hidden');
+  });
+
+  document.getElementById('dengan-pengemudi').addEventListener('click', function() {
+    document.getElementById('dengan-pengemudi-form').classList.remove('hidden');
+    document.getElementById('tanpa-pengemudi-form').classList.add('hidden');
+  });
+
+  // Event klik tombol Cari Mobil
+  document.addEventListener('DOMContentLoaded', function () {
+    const cariMobilBtn = document.getElementById('cari-mobil');
+    if (cariMobilBtn) {
+      cariMobilBtn.addEventListener('click', function () {
+        window.location.href = 'mobil.html';
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+
+        
+<div id="bus" class="tab-pane hidden">
+  <h2 class="text-xl sm:text-2xl font-semibold">Bus Section</h2>
+  <p class="text-sm sm:text-base">Konten terkait Bus.</p>
+
+  <!-- Form Row (Berupa 5 kolom bersejajar) -->
+  <div class="flex flex-wrap justify-between gap-4 mb-8">
+
+      <!-- Dropdown Kota Asal (Dari) -->
+      <div class="relative w-full sm:w-64">
+          <label class="block text-center text-white mb-2 text-sm">Dari</label>
+          <button id="dropdown-dari-bus" class="flex items-center justify-between px-4 py-3 bg-gray-500 text-white border border-white rounded-md w-full text-sm">
+              Pilih Kota Asal
+              <svg class="w-4 h-4 fill-current text-white ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+              </svg>
+          </button>
+          <div id="dropdown-menu-dari-bus" class="absolute hidden bg-white text-black border rounded-md w-full mt-2 shadow-lg z-10">
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Jakarta</button>
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Surabaya</button>
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Medan</button>
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Bali</button>
+          </div>
+      </div>
+
+      <!-- Dropdown Kota Tujuan (Ke) -->
+      <div class="relative w-full sm:w-64">
+          <label class="block text-center text-white mb-2 text-sm">Ke</label>
+          <button id="dropdown-ke-bus" class="flex items-center justify-between px-4 py-3 bg-gray-500 text-white border border-white rounded-md w-full text-sm">
+              Pilih Kota Tujuan
+              <svg class="w-4 h-4 fill-current text-white ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+              </svg>
+          </button>
+          <div id="dropdown-menu-ke-bus" class="absolute hidden bg-white text-black border rounded-md w-full mt-2 shadow-lg z-10">
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Jakarta</button>
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Surabaya</button>
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Medan</button>
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Bali</button>
+          </div>
+      </div>
+
+      <!-- Tanggal Berangkat -->
+      <div class="w-full sm:w-64">
+          <label class="block text-center text-white mb-2 text-sm">Tanggal Berangkat</label>
+          <input type="date" class="w-full px-4 py-3 border border-white rounded-md bg-gray-500 text-white" placeholder="Tanggal Berangkat">
+      </div>
+
+      <!-- Tanggal Kembali (Pulang Pergi) -->
+      <div class="w-full sm:w-64">
+          <label class="block text-center text-white mb-2 text-sm">Tanggal Kembali</label>
+          <input type="date" class="w-full px-4 py-3 border border-white rounded-md bg-gray-500 text-white" placeholder="Tanggal Kembali">
+      </div>
+
+      <!-- Pulang Pergi -->
+      <div class="flex items-center gap-4 w-full sm:w-64">
+          <input type="checkbox" id="pulang-pergi" class="h-5 w-5 text-blue-600">
+          <label for="pulang-pergi" class="text-white text-sm">Pulang Pergi</label>
+      </div>
+
+      <!-- Dropdown Jumlah Penumpang -->
+      <div class="relative w-full sm:w-64">
+          <label class="block text-center text-white mb-2 text-sm">Jumlah Penumpang</label>
+          <button id="dropdown-penumpang" class="flex items-center justify-between px-4 py-3 bg-gray-500 text-white border border-white rounded-md w-full text-sm">
+              Pilih Jumlah Penumpang
+              <svg class="w-4 h-4 fill-current text-white ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+              </svg>
+          </button>
+          <div id="dropdown-menu-penumpang" class="absolute hidden bg-white text-black border rounded-md w-full mt-2 shadow-lg z-10">
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">1 Penumpang</button>
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">2 Penumpang</button>
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">3 Penumpang</button>
+              <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">4 Penumpang</button>
+          </div>
+      </div>
+  </div>
+
+    <!-- Tombol Cari Tiket Bus tanpa JavaScript -->
+    <div class="flex justify-center gap-4 mt-8">
+      <a href="bus.html" class="flex items-center gap-2 px-6 py-3 border border-white rounded-md bg-orange-500 text-white">
+        <svg class="w-5 h-5 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M14.793 13.793a7 7 0 111.414-1.414l3.296 3.296a1 1 0 11-1.414 1.414l-3.296-3.296zM15 7a5 5 0 10-10 0 5 5 0 0010 0z" />
+        </svg>
+        Cari Tiket Bus
+      </a>
+    </div>
+
+</div>
+
+<script>
+   function setupDropdown(toggleId, menuId) {
+    const toggleButton = document.getElementById(toggleId);
+    const dropdownMenu = document.getElementById(menuId);
+  
+    // Toggle dropdown tampil/sembunyi
+    toggleButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('hidden');
+    });
+  
+    // Saat pilih salah satu item di menu dropdown
+    dropdownMenu.querySelectorAll('button').forEach(item => {
+      item.addEventListener('click', () => {
+        toggleButton.innerHTML = `${item.textContent}
+          <svg class="w-4 h-4 fill-current text-white ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+          </svg>`;
+        dropdownMenu.classList.add('hidden');
+      });
+    });
+  
+    // Klik luar menu untuk nutup
+    document.addEventListener('click', (e) => {
+      if (!dropdownMenu.contains(e.target) && !toggleButton.contains(e.target)) {
+        dropdownMenu.classList.add('hidden');
+      }
+    });
+  }
+  
+  // Panggil untuk semua dropdown di tab Bus
+  setupDropdown('dropdown-dari-bus', 'dropdown-menu-dari-bus');
+  setupDropdown('dropdown-ke-bus', 'dropdown-menu-ke-bus'); // <--- yang benar
+
+  setupDropdown('dropdown-penumpang', 'dropdown-menu-penumpang');
+
+  
+
+// Pastikan tombol dengan ID "cari-tiket" ada di DOM
+document.addEventListener("DOMContentLoaded", function () {
+    const cariTiketBtn = document.getElementById("cari-tiket");
+    if (cariTiketBtn) {
+      cariTiketBtn.addEventListener("click", function (e) {
+        e.preventDefault(); // Mencegah reload jika dalam form
+        window.location.href = "bus.html";
+      });
+    }
+  });
+  </script>
+
+        
+
+
+<div id="kereta" class="tab-pane hidden">
+  <h2 class="text-xl sm:text-2xl font-semibold">Kereta Section</h2>
+  <p class="text-sm sm:text-base">Konten terkait Kereta.</p>
+
+  <!-- Form Row -->
+  <div class="flex flex-wrap justify-between gap-4 mb-8">
+
+    <!-- Kota Asal -->
+    <div class="relative w-full sm:w-64">
+      <label class="block text-center text-white mb-2 text-sm">Dari</label>
+      <button id="dropdown-dari-kereta" class="flex items-center justify-between px-4 py-3 bg-gray-500 text-white border border-white rounded-md w-full text-sm">
+        Pilih Kota Asal
+        <svg class="w-4 h-4 ml-2" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" /></svg>
+      </button>
+      <div id="dropdown-menu-dari-kereta" class="absolute hidden bg-white text-black border rounded-md w-full mt-2 shadow-lg z-10">
+        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Bandung</button>
+        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Yogyakarta</button>
+        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Solo</button>
+        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Malang</button>
+      </div>
+    </div>
+
+    <!-- Kota Tujuan -->
+    <div class="relative w-full sm:w-64">
+      <label class="block text-center text-white mb-2 text-sm">Ke</label>
+      <button id="dropdown-ke-kereta" class="flex items-center justify-between px-4 py-3 bg-gray-500 text-white border border-white rounded-md w-full text-sm">
+        Pilih Kota Tujuan
+        <svg class="w-4 h-4 ml-2" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" /></svg>
+      </button>
+      <div id="dropdown-menu-ke-kereta" class="absolute hidden bg-white text-black border rounded-md w-full mt-2 shadow-lg z-10">
+        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Bandung</button>
+        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Yogyakarta</button>
+        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Solo</button>
+        <button class="block w-full text-left px-4 py-2 hover:bg-gray-200">Malang</button>
+      </div>
+    </div>
+
+    <!-- Tanggal Berangkat -->
+    <div class="w-full sm:w-64">
+      <label class="block text-center text-white mb-2 text-sm">Tanggal Berangkat</label>
+      <input type="date" class="w-full px-4 py-3 border border-white rounded-md bg-gray-500 text-white">
+    </div>
+
+    <!-- Tanggal Kembali -->
+    <div class="w-full sm:w-64">
+      <label class="block text-center text-white mb-2 text-sm">Tanggal Kembali</label>
+      <input type="date" class="w-full px-4 py-3 border border-white rounded-md bg-gray-500 text-white">
+    </div>
+
+    <!-- Pulang Pergi -->
+    <div class="flex items-center gap-4 w-full sm:w-64">
+      <input type="checkbox" id="pulang-pergi-kereta" class="h-5 w-5 text-blue-600">
+      <label for="pulang-pergi-kereta" class="text-white text-sm">Pulang Pergi</label>
+    </div>
+
+    <!-- Dropdown Penumpang untuk Tab Kereta -->
+<div class="relative w-full md:w-auto">
+  <button id="dropdown-pax-kereta" class="flex items-center justify-between w-full md:w-auto gap-2 px-4 py-2 bg-gray-500 text-white border border-white rounded-md text-sm sm:text-base">
+    Penumpang
+    <svg class="w-4 h-4 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+      <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+    </svg>
+  </button>
+
+  <!-- Dropdown Konten -->
+  <div id="pax-dropdown-kereta" class="absolute z-50 hidden bg-white text-black border rounded-md w-64 mt-2 shadow-lg">
+
+    <!-- Dewasa -->
+    <div class="p-3 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-user text-gray-700"></i>
+          <span class="font-semibold">Dewasa</span>
+        </div>
+        <small class="text-gray-500 text-sm">Usia 3 tahun ke atas</small>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="minus-dewasa-kereta">-</button>
+        <input id="dewasa-kereta" class="w-12 text-center p-2 border rounded-md" type="number" value="1" min="1">
+        <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="plus-dewasa-kereta">+</button>
+      </div>
+    </div>
+
+    <!-- Bayi -->
+    <div class="p-3 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-baby text-pink-500"></i>
+          <span class="font-semibold">Bayi</span>
+        </div>
+        <small class="text-gray-500 text-sm">Usia di bawah 3 tahun</small>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="minus-bayi-kereta">-</button>
+        <input id="bayi-kereta" class="w-12 text-center p-2 border rounded-md" type="number" value="0" min="0">
+        <button type="button" class="px-2 py-1 bg-gray-300 rounded-md" id="plus-bayi-kereta">+</button>
+      </div>
+    </div>
+
+    <!-- Tombol Selesai -->
+    <div class="p-3 border-t text-right">
+      <button type="button" id="selesai-kereta" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+        Selesai
+      </button>
+    </div>
+
+  </div>
+</div>
+
+  </div>
+
+<!-- Tombol Cari Tiket Kereta -->
+<div class="flex justify-center gap-4 mt-8">
+  <button id="cari-tiket-kereta" class="flex items-center gap-2 px-6 py-3 border border-white rounded-md bg-orange-600 text-white">
+    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M14.793 13.793a7 7 0 111.414-1.414l3.296 3.296a1 1 0 11-1.414 1.414l-3.296-3.296zM15 7a5 5 0 10-10 0 5 5 0 0010 0z" />
+    </svg>
+    Cari Tiket Kereta
+  </button>
+</div>
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Event listener untuk tombol cari tiket kereta
+    const cariTiketKeretaBtn = document.getElementById("cari-tiket-kereta");
+    if (cariTiketKeretaBtn) {
+      cariTiketKeretaBtn.addEventListener("click", function () {
+        window.location.href = "kereta.html"; // Arahkan ke halaman kereta.html
+      });
+    }
+
+    // Toggle dropdown untuk kereta
+    const dropdownBtn = document.getElementById('dropdown-pax-kereta');
+    const dropdownMenu = document.getElementById('pax-dropdown-kereta');
+
+    dropdownBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('hidden');
+    });
+
+    // Close dropdown jika klik di luar
+    document.addEventListener('click', function (e) {
+      if (!dropdownMenu.contains(e.target) && !dropdownBtn.contains(e.target)) {
+        dropdownMenu.classList.add('hidden');
+      }
+    });
+
+    // Inisialisasi elemen
+    const dewasaInput = document.getElementById('dewasa-kereta');
+    const bayiInput = document.getElementById('bayi-kereta');
+    const selesaiBtn = document.getElementById('selesai-kereta');
+
+    // Tombol + dan -
+    document.getElementById('plus-dewasa-kereta').addEventListener('click', () => {
+      dewasaInput.value = parseInt(dewasaInput.value) + 1;
+    });
+    document.getElementById('minus-dewasa-kereta').addEventListener('click', () => {
+      if (parseInt(dewasaInput.value) > 1) dewasaInput.value = parseInt(dewasaInput.value) - 1;
+    });
+
+    document.getElementById('plus-bayi-kereta').addEventListener('click', () => {
+      bayiInput.value = parseInt(bayiInput.value) + 1;
+    });
+    document.getElementById('minus-bayi-kereta').addEventListener('click', () => {
+      if (parseInt(bayiInput.value) > 0) bayiInput.value = parseInt(bayiInput.value) - 1;
+    });
+
+    // Tombol Selesai
+    selesaiBtn.addEventListener('click', () => {
+      const dewasa = parseInt(dewasaInput.value);
+      const bayi = parseInt(bayiInput.value);
+      const total = dewasa + bayi;
+
+      dropdownBtn.innerHTML = `
+        ${total} Penumpang
+        <svg class="w-4 h-4 fill-current text-white ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" />
+        </svg>
+      `;
+
+      dropdownMenu.classList.add('hidden');
+    });
+  });
+
+  // Setup dropdown untuk kereta
+  setupDropdown('dropdown-dari-kereta', 'dropdown-menu-dari-kereta');
+  setupDropdown('dropdown-ke-kereta', 'dropdown-menu-ke-kereta');
+  setupDropdown('dropdown-penumpang-kereta', 'dropdown-menu-penumpang-kereta');
+
+</script>
+
+
+
+
+    
+
+
+      
+        
+        <div class="flex space-x-6 mb-4">
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="trip" onclick="toggleTripType(false)" checked class="cursor-pointer">
+            <span>Sekali Jalan</span>
+          </label>
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="trip" onclick="toggleTripType(true)" class="cursor-pointer">
+            <span>Pulang Pergi</span>
+          </label>
+        </div>
+        <div class="grid md:grid-cols-4 gap-4">
+          <div class="relative">
+            <input type="text" id="from-input" autocomplete="off">
+            <div id="from-autocomplete" class="autocomplete-dropdown hidden absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-y-auto"></div>
+          </div>
+          <div class="relative">
+            <input type="text" id="to-input" autocomplete="off">
+            <div id="to-autocomplete" class="autocomplete-dropdown hidden absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-y-auto"></div>
+          </div>
+         
+           
+          <button id="search-button" ">
+            <span id="search-loading" class="hidden ml-2">
+              <i class="fas fa-circle-notch loading-spinner"></i>
+            </span>
+          </button>
+        </div>
+        <div class="mt-4 flex items-center text-sm">
+          <input type="checkbox" id="direct-flight" class="mr-2 cursor-pointer">
+          <label for="direct-flight" class="cursor-pointer">Hanya penerbangan langsung</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Promo Section (Mobile Slider) -->
+<section class="py-10 md:hidden">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-6">Promo Spesial untuk Anda</h2>
+    
+    <!-- Loading state -->
+    <div id="promo-loading-mobile" class="promo-mobile-slider-loading">
+      <div class="overflow-x-auto no-scrollbar -mx-4 px-4">
+        <div class="flex gap-4 px-4 w-max" id="promo-slider-track-loading">
+          <div class="promo-mobile-slide bg-gray-200 rounded shadow animate-pulse w-72 h-44"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slider container -->
+    <div id="promo-container-mobile" class="hidden">
+      <div class="overflow-x-auto no-scrollbar scroll-smooth -mx-4 px-4">
+        <div class="flex gap-4 transition-transform duration-500 ease-in-out" id="slider-track">
+          <!-- Slides will be added here dynamically -->
+        </div>
+      </div>
+      <div class="flex justify-center mt-4 gap-2" id="slider-nav">
+        <!-- Navigation dots -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Promo Section (Desktop Grid) -->
+<section class="py-10 hidden md:block">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-6">Promo Spesial untuk Anda</h2>
+
+    <div id="promo-loading" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-gray-200 rounded shadow h-48 animate-pulse"></div>
+      <div class="bg-gray-200 rounded shadow h-48 animate-pulse"></div>
+      <div class="bg-gray-200 rounded shadow h-48 animate-pulse"></div>
+      <div class="bg-gray-200 rounded shadow h-48 animate-pulse"></div>
+    </div>
+
+    <div id="promo-container" class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <!-- Promo cards will be loaded here dynamically -->
+    </div>
+  </div>
+</section>
+
+
+  <!-- Popular Destinations -->
+  <section class="py-10 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-2xl font-bold mb-6">Destinasi Populer</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+        <div class="bg-white rounded-lg shadow-sm p-4 text-center cursor-pointer hover:shadow-md smooth-transition">
+          <div class="w-12 h-12 mx-auto mb-2 bg-blue-100 rounded-full flex items-center justify-center text-blue-500">
+            <i class="fas fa-umbrella-beach"></i>
+          </div>
+          <span class="text-sm font-medium">Bali</span>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-4 text-center cursor-pointer hover:shadow-md smooth-transition">
+          <div class="w-12 h-12 mx-auto mb-2 bg-blue-100 rounded-full flex items-center justify-center text-blue-500">
+            <i class="fas fa-city"></i>
+          </div>
+          <span class="text-sm font-medium">Jakarta</span>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-4 text-center cursor-pointer hover:shadow-md smooth-transition">
+          <div class="w-12 h-12 mx-auto mb-2 bg-blue-100 rounded-full flex items-center justify-center text-blue-500">
+            <i class="fas fa-mountain"></i>
+          </div>
+          <span class="text-sm font-medium">Yogyakarta</span>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-4 text-center cursor-pointer hover:shadow-md smooth-transition">
+          <div class="w-12 h-12 mx-auto mb-2 bg-blue-100 rounded-full flex items-center justify-center text-blue-500">
+            <i class="fas fa-shopping-bag"></i>
+          </div>
+          <span class="text-sm font-medium">Singapore</span>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-4 text-center cursor-pointer hover:shadow-md smooth-transition">
+          <div class="w-12 h-12 mx-auto mb-2 bg-blue-100 rounded-full flex items-center justify-center text-blue-500">
+            <i class="fas fa-torii-gate"></i>
+          </div>
+          <span class="text-sm font-medium">Tokyo</span>
+        </div>
+        <div class="bg-white rounded-lg shadow-sm p-4 text-center cursor-pointer hover:shadow-md smooth-transition">
+          <div class="w-12 h-12 mx-auto mb-2 bg-blue-100 rounded-full flex items-center justify-center text-blue-500">
+            <i class="fas fa-archway"></i>
+          </div>
+          <span class="text-sm font-medium">Bangkok</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Tiket Pesawat Section -->
+<!-- Tiket Pesawat Populer -->
+<section id="pesawat-section" class="py-10 bg-gray-50 relative">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-6">Tiket Pesawat Populer</h2>
+    
+
+    <!-- Wrapper tombol dan carousel -->
+    <div class="relative">
+
+      <!-- Tombol kiri -->
+      <div class="swiper-button-prev-custom">
+        <span>&lt;</span>
+      </div>
+
+      <!-- Tombol kanan -->
+      <div class="swiper-button-next-custom">
+        <span>&gt;</span>
+      </div>
+
+      <!-- Carousel -->
+      <div class="swiper-container">
+        
+        <div class="swiper-wrapper">
+          
+          <!-- Item Tiket -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+
+
+            <img src="images/OIP.jpg" alt="Jakarta ke Bali" class="w-full h-40 object-cover">
+            <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">Pulang Pergi</div>
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 1.250.000</p>
+              <p class="font-semibold">Jakarta → Bali</p>
+              <p class="text-gray-500 text-sm">10 - 13 Mei 2025</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+
+
+            <img src="images/surabaya.jpg" alt="Jakarta ke Surabaya" class="w-full h-40 object-cover">
+            <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">Pulang Pergi</div>
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 750.000</p>
+              <p class="font-semibold">Jakarta → Surabaya</p>
+              <p class="text-gray-500 text-sm">9 - 12 Mei 2025</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+
+
+            <img src="images/makassar_590.jpg" alt="Jakarta ke Makassar" class="w-full h-40 object-cover">
+            <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">Pulang Pergi</div>
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 1.350.000</p>
+              <p class="font-semibold">Jakarta → Makassar</p>
+              <p class="text-gray-500 text-sm">8 - 11 Mei 2025</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+
+
+            <img src="images/indonesia-borodobur.jpg" alt="Bandung ke Yogyakarta" class="w-full h-40 object-cover">
+            <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">Pulang Pergi</div>
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 690.000</p>
+              <p class="font-semibold">Bandung → Yogyakarta</p>
+              <p class="text-gray-500 text-sm">11 - 14 Mei 2025</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+
+
+            <img src="images/R.jpg" alt="Jakarta ke Balikpapan" class="w-full h-40 object-cover">
+            <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">Pulang Pergi</div>
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 1.050.000</p>
+              <p class="font-semibold">Jakarta → Balikpapan</p>
+              <p class="text-gray-500 text-sm">12 - 15 Mei 2025</p>
+            </div>
+          </div>
+
+          <!-- Item Tiket Tambahan -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+
+
+            <img src="images/OIP (1).jpg" alt="Surabaya ke Denpasar" class="w-full h-40 object-cover">
+            <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">Pulang Pergi</div>
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 820.000</p>
+              <p class="font-semibold">Surabaya → Denpasar</p>
+              <p class="text-gray-500 text-sm">13 - 16 Mei 2025</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+
+
+            <img src="images/OIP (2).jpg" alt="Jakarta ke Medan" class="w-full h-40 object-cover">
+            <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">Pulang Pergi</div>
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 1.180.000</p>
+              <p class="font-semibold">Jakarta → Medan</p>
+              <p class="text-gray-500 text-sm">14 - 17 Mei 2025</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+
+
+            <img src="images/OIP (3).jpg" alt="Yogyakarta ke Lombok" class="w-full h-40 object-cover">
+            <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">Pulang Pergi</div>
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 950.000</p>
+              <p class="font-semibold">Yogyakarta → Lombok</p>
+              <p class="text-gray-500 text-sm">15 - 18 Mei 2025</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+
+
+            <img src="images/OIP (4).jpg" alt="Bandung ke Padang" class="w-full h-40 object-cover">
+            <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">Pulang Pergi</div>
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 990.000</p>
+              <p class="font-semibold">Bandung → Padang</p>
+              <p class="text-gray-500 text-sm">16 - 19 Mei 2025</p>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+<!-- Swiper Init -->
+<script>
+const swiper = new Swiper('.swiper-container', {
+  slidesPerView: 1.2, // tampilkan 1.2 item di mobile (otomatis adaptif)
+  spaceBetween: 16,
+  centeredSlides: false,
+  breakpoints: {
+    640: {
+      slidesPerView: 2,
+    },
+    768: {
+      slidesPerView: 3,
+    },
+    1024: {
+      slidesPerView: 4,
+    },
+  },
+  navigation: {
+    nextEl: '.swiper-button-next-custom',
+    prevEl: '.swiper-button-prev-custom',
+  },
+});
+
+
+</script>
+
+<style>
+  .swiper-container {
+  overflow: hidden; /* ini mencegah meluber */
+  width: 100%;
+}
+
+.swiper-wrapper {
+  display: flex;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  box-sizing: border-box;
+}
+
+
+  .swiper-button-prev-custom,
+  .swiper-button-next-custom {
+    position: absolute;
+    top: 40%;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    padding: 8px;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+  }
+
+  .swiper-button-prev-custom {
+    left: 0.5rem;
+  }
+
+  .swiper-button-next-custom {
+    right: 0.5rem;
+  }
+
+  .swiper-slide {
+  width: auto;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .swiper-slide {
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+  @media (max-width: 640px) {
+    .swiper-button-prev-custom,
+    .swiper-button-next-custom {
+      top: 35%;
+      padding: 6px;
+      font-size: 16px;
+    }
+  }
+</style>
+
+
+
+
+<!-- Hotel Section -->
+<!-- Hotel Populer -->
+<section id="hotel-section" class="py-10 bg-white relative">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-6">Hotel Populer</h2>
+
+    <!-- Wrapper tombol dan carousel -->
+    <div class="relative">
+
+<!-- Tombol kiri -->
+<div class="hotel-swiper-prev absolute top-1/2 -left-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+  </svg>
+</div>
+
+<!-- Tombol kanan -->
+<div class="hotel-swiper-next absolute top-1/2 -right-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+  </svg>
+</div>
+
+
+      <!-- Carousel -->
+      <div class="swiper-container hotel-swiper">
+        <div class="swiper-wrapper">
+
+          <!-- Item Hotel -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/235104_15082612180035086935.jpg" alt="Hotel Bali Indah" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 450.000 / malam</p>
+              <p class="font-semibold mb-1">Hotel Bali Indah</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>☆</span>
+                <span class="text-sm text-gray-600 ml-2">(4.2)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Kuta, Bali</p>
+            </div>
+          </div>
+
+          <!-- Hotel 2 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/c92a1e81a2fd756808d14fd4ccd04956.jpg" alt="Grand Jakarta Hotel" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 650.000 / malam</p>
+              <p class="font-semibold mb-1">Grand Jakarta Hotel</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                <span class="text-sm text-gray-600 ml-2">(4.8)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Sudirman, Jakarta</p>
+            </div>
+          </div>
+
+          <!-- Hotel 3 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/holiday-inn-bandung-4963725377-4x3.jpg" alt="Bandung Cozy Inn" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 390.000 / malam</p>
+              <p class="font-semibold mb-1">Bandung Cozy Inn</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>☆</span>
+                <span class="text-sm text-gray-600 ml-2">(4.1)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Dago, Bandung</p>
+            </div>
+          </div>
+
+          <!-- Hotel 4 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/4e7b68f6dfb5b7fe6d842a20fa62bfa1.jpg" alt="Lombok Ocean View" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 520.000 / malam</p>
+              <p class="font-semibold mb-1">Lombok Ocean View</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>☆</span>
+                <span class="text-sm text-gray-600 ml-2">(4.3)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Senggigi, Lombok</p>
+            </div>
+          </div>
+
+          <!-- Hotel 5 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/OIP (6).jpg" alt="Surabaya Comfort Stay" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 410.000 / malam</p>
+              <p class="font-semibold mb-1">Surabaya Comfort Stay</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>☆</span>
+                <span class="text-sm text-gray-600 ml-2">(4.0)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Gubeng, Surabaya</p>
+            </div>
+          </div>
+
+          <!-- Hotel 6 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/OIP (7).jpg" alt="Yogyakarta Heritage Hotel" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 480.000 / malam</p>
+              <p class="font-semibold mb-1">Yogyakarta Heritage Hotel</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                <span class="text-sm text-gray-600 ml-2">(4.7)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Malioboro, Yogyakarta</p>
+            </div>
+          </div>
+
+          <!-- Hotel 7 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/OIP (8).jpg" alt="Medan Royal Inn" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 430.000 / malam</p>
+              <p class="font-semibold mb-1">Medan Royal Inn</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>☆</span>
+                <span class="text-sm text-gray-600 ml-2">(4.1)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Medan Baru, Medan</p>
+            </div>
+          </div>
+
+          <!-- Hotel 8 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/R (1).jpg" alt="Makassar Sea View" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 470.000 / malam</p>
+              <p class="font-semibold mb-1">Makassar Sea View</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                <span class="text-sm text-gray-600 ml-2">(4.6)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Losari, Makassar</p>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Swiper Init untuk Hotel -->
+<script>
+const hotelSwiper = new Swiper('.hotel-swiper', {
+  slidesPerView: 1.2,
+  spaceBetween: 16,
+  centeredSlides: false,
+  breakpoints: {
+    640: {
+      slidesPerView: 2,
+    },
+    768: {
+      slidesPerView: 3,
+    },
+    1024: {
+      slidesPerView: 4,
+    },
+  },
+  navigation: {
+    nextEl: '.hotel-swiper-next',
+    prevEl: '.hotel-swiper-prev',
+  },
+});
+
+</script>
+
+
+
+
+
+
+ <!-- Rental Mobil Section -->
+ <section id="rental-mobil-section" class="py-10 bg-white relative">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-6">Rental Mobil Populer</h2>
+
+    <!-- Wrapper tombol dan carousel -->
+    <div class="relative">
+
+      <!-- Tombol kiri -->
+      <div class="rental-swiper-prev absolute top-1/2 -left-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </div>
+
+      <!-- Tombol kanan -->
+      <div class="rental-swiper-next absolute top-1/2 -right-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
+
+      <!-- Carousel -->
+      <div class="swiper-container rental-swiper">
+        <div class="swiper-wrapper">
+
+          <!-- Item Mobil 1 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/R (7).jpg" alt="Toyota Avanza" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 350.000 / hari</p>
+              <p class="font-semibold mb-1">Toyota Avanza</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>☆</span>
+                <span class="text-sm text-gray-600 ml-2">(4.3)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Jakarta</p>
+              <p class="text-green-600 text-sm mt-1">Dengan Pengemudi</p>
+            </div>
+          </div>
+
+          <!-- Item Mobil 2 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/R (8).jpg" alt="Toyota Innova Reborn" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 550.000 / hari</p>
+              <p class="font-semibold mb-1">Toyota Innova Reborn</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                <span class="text-sm text-gray-600 ml-2">(4.8)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Bandung</p>
+              <p class="text-green-600 text-sm mt-1">Dengan Pengemudi</p>
+            </div>
+          </div>
+
+          <!-- Item Mobil 3 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/2af8872a9d832458fe465d71b37cf74d.jpg" alt="Honda Brio" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 280.000 / hari</p>
+              <p class="font-semibold mb-1">Honda Brio</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>☆</span>
+                <span class="text-sm text-gray-600 ml-2">(4.1)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Surabaya</p>
+              <p class="text-red-600 text-sm mt-1">Tanpa Pengemudi</p>
+            </div>
+          </div>
+
+          <!-- Item Mobil 4 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/innova.jpg" alt="Toyota Fortuner" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 1.000.000 / hari</p>
+              <p class="font-semibold mb-1">Toyota Fortuner</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                <span class="text-sm text-gray-600 ml-2">(4.9)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Jakarta</p>
+              <p class="text-green-600 text-sm mt-1">Dengan Pengemudi</p>
+            </div>
+          </div>
+
+          <!-- Item Mobil 5 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/R (9).jpg" alt="Suzuki Ertiga" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 370.000 / hari</p>
+              <p class="font-semibold mb-1">Suzuki Ertiga</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>☆</span>
+                <span class="text-sm text-gray-600 ml-2">(4.2)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Yogyakarta</p>
+              <p class="text-red-600 text-sm mt-1">Tanpa Pengemudi</p>
+            </div>
+          </div>
+
+          <!-- Item Mobil 6 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer max-w-[90%] sm:max-w-full mx-auto">
+            <img src="images/2040.png" alt="Toyota Alphard" class="w-full h-40 object-cover">
+            <div class="p-4 text-base">
+              <p class="font-bold text-blue-600 text-xl mb-1">Rp 2.500.000 / hari</p>
+              <p class="font-semibold mb-1">Toyota Alphard</p>
+              <div class="flex items-center text-yellow-500 mb-1">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                <span class="text-sm text-gray-600 ml-2">(5.0)</span>
+              </div>
+              <p class="text-gray-500 text-sm">Bali</p>
+              <p class="text-green-600 text-sm mt-1">Dengan Pengemudi</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Swiper Init untuk Rental Mobil -->
+<script>
+const rentalSwiper = new Swiper('.rental-swiper', {
+  slidesPerView: 1.2,
+  spaceBetween: 16,
+  centeredSlides: false,
+  breakpoints: {
+    640: { slidesPerView: 2 },
+    768: { slidesPerView: 3 },
+    1024: { slidesPerView: 4 },
+  },
+  navigation: {
+    nextEl: '.rental-swiper-next',
+    prevEl: '.rental-swiper-prev',
+  },
+});
+</script>
+
+
+
+<!-- Tiket Bus Section -->
+<section id="tiket-bus-section" class="py-10 bg-gray-50 relative">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-6">Tiket Bus Populer</h2>
+
+    <div class="relative">
+      <!-- Navigasi -->
+      <div class="bus-swiper-prev absolute top-1/2 -left-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition">
+        <i class="fas fa-chevron-left text-gray-800"></i>
+      </div>
+      <div class="bus-swiper-next absolute top-1/2 -right-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition">
+        <i class="fas fa-chevron-right text-gray-800"></i>
+      </div>
+
+      <!-- Carousel -->
+      <div class="swiper-container bus-swiper">
+        <div class="swiper-wrapper">
+
+          <!-- Tiket 1 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto">
+            <div class="p-4 text-base">
+              <div class="flex justify-between text-sm text-gray-600 mb-2">
+                <div><p class="font-bold text-lg text-blue-600">08:00</p><p class="text-xs">Jakarta</p></div>
+                <div><p class="text-gray-500">6 jam</p><p class="text-xl">→</p></div>
+                <div><p class="font-bold text-lg text-blue-600">14:00</p><p class="text-xs">Bandung</p></div>
+              </div>
+              <p class="font-semibold mb-1">PO Haryanto - Jetbus 3+</p>
+              <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                <i class="fas fa-snowflake" title="AC"></i>
+                <i class="fas fa-wifi" title="WiFi"></i>
+              </div>
+              <div class="flex justify-between items-center mt-2">
+                <p class="text-sm text-gray-500">Tersedia: 10 Kursi</p>
+                <p class="font-bold text-orange-500 text-lg">Rp 180.000</p>
+              </div>
+              <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Pesan Tiket</button>
+            </div>
+          </div>
+
+          <!-- Tiket 2 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto">
+            <div class="p-4 text-base">
+              <div class="flex justify-between text-sm text-gray-600 mb-2">
+                <div><p class="font-bold text-lg text-blue-600">09:30</p><p class="text-xs">Surabaya</p></div>
+                <div><p class="text-gray-500">10 jam</p><p class="text-xl">→</p></div>
+                <div><p class="font-bold text-lg text-blue-600">19:30</p><p class="text-xs">Yogyakarta</p></div>
+              </div>
+              <p class="font-semibold mb-1">Rosalia Indah - Double Decker</p>
+              <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                <i class="fas fa-snowflake"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-tv"></i>
+              </div>
+              <div class="flex justify-between items-center mt-2">
+                <p class="text-sm text-gray-500">Tersedia: 5 Kursi</p>
+                <p class="font-bold text-orange-500 text-lg">Rp 250.000</p>
+              </div>
+              <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Pesan Tiket</button>
+            </div>
+          </div>
+
+          <!-- Tiket 3 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto">
+            <div class="p-4 text-base">
+              <div class="flex justify-between text-sm text-gray-600 mb-2">
+                <div><p class="font-bold text-lg text-blue-600">06:00</p><p class="text-xs">Solo</p></div>
+                <div><p class="text-gray-500">4.5 jam</p><p class="text-xl">→</p></div>
+                <div><p class="font-bold text-lg text-blue-600">10:30</p><p class="text-xs">Semarang</p></div>
+              </div>
+              <p class="font-semibold mb-1">Sinar Jaya - Executive</p>
+              <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                <i class="fas fa-snowflake"></i>
+                <i class="fas fa-plug"></i>
+              </div>
+              <div class="flex justify-between items-center mt-2">
+                <p class="text-sm text-gray-500">Tersedia: 8 Kursi</p>
+                <p class="font-bold text-orange-500 text-lg">Rp 120.000</p>
+              </div>
+              <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Pesan Tiket</button>
+            </div>
+          </div>
+
+          <!-- Tiket 4 -->
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto">
+            <div class="p-4 text-base">
+              <div class="flex justify-between text-sm text-gray-600 mb-2">
+                <div><p class="font-bold text-lg text-blue-600">22:00</p><p class="text-xs">Jakarta</p></div>
+                <div><p class="text-gray-500">12 jam</p><p class="text-xl">→</p></div>
+                <div><p class="font-bold text-lg text-blue-600">10:00</p><p class="text-xs">Malang</p></div>
+              </div>
+              <p class="font-semibold mb-1">Handoyo - Ekonomi</p>
+              <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                <i class="fas fa-snowflake"></i>
+              </div>
+              <div class="flex justify-between items-center mt-2">
+                <p class="text-sm text-gray-500">Tersedia: 3 Kursi</p>
+                <p class="font-bold text-orange-500 text-lg">Rp 200.000</p>
+              </div>
+              <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Pesan Tiket</button>
+            </div>
+          </div>
+
+          <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto">
+              <div class="p-4 text-base">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <div><p class="font-bold text-lg text-blue-600">07:15</p><p class="text-xs">Bandung</p></div>
+                  <div><p class="text-gray-500">2 jam</p><p class="text-xl">→</p></div>
+                  <div><p class="font-bold text-lg text-blue-600">09:15</p><p class="text-xs">Garut</p></div>
+                </div>
+                <p class="font-semibold mb-1">Bus Budiman - Eksekutif</p>
+                <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                  <i class="fas fa-snowflake"></i>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-sm text-gray-500">Tersedia: 12 Kursi</p>
+                  <p class="font-bold text-orange-500 text-lg">Rp 60.000</p>
+                </div>
+                <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Pesan Tiket</button>
+              </div>
+            </div>
+
+            <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto">
+              <div class="p-4 text-base">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <div><p class="font-bold text-lg text-blue-600">20:00</p><p class="text-xs">Denpasar</p></div>
+                  <div><p class="text-gray-500">12 jam</p><p class="text-xl">→</p></div>
+                  <div><p class="font-bold text-lg text-blue-600">08:00</p><p class="text-xs">Mataram</p></div>
+                </div>
+                <p class="font-semibold mb-1">Perama Tour - Shuttle</p>
+                <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                  <i class="fas fa-snowflake"></i>
+                  <i class="fas fa-wifi"></i>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-sm text-gray-500">Tersedia: 6 Kursi</p>
+                  <p class="font-bold text-orange-500 text-lg">Rp 220.000</p>
+                </div>
+                <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Pesan Tiket</button>
+              </div>
+            </div>
+
+            <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto">
+              <div class="p-4 text-base">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <div><p class="font-bold text-lg text-blue-600">18:00</p><p class="text-xs">Medan</p></div>
+                  <div><p class="text-gray-500">10 jam</p><p class="text-xl">→</p></div>
+                  <div><p class="font-bold text-lg text-blue-600">04:00</p><p class="text-xs">Pekanbaru</p></div>
+                </div>
+                <p class="font-semibold mb-1">ALS - Patas AC</p>
+                <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                  <i class="fas fa-snowflake"></i>
+                  <i class="fas fa-plug"></i>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-sm text-gray-500">Tersedia: 4 Kursi</p>
+                  <p class="font-bold text-orange-500 text-lg">Rp 300.000</p>
+                </div>
+                <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Pesan Tiket</button>
+              </div>
+            </div>
+
+            <div class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto">
+              <div class="p-4 text-base">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <div><p class="font-bold text-lg text-blue-600">14:30</p><p class="text-xs">Padang</p></div>
+                  <div><p class="text-gray-500">2.5 jam</p><p class="text-xl">→</p></div>
+                  <div><p class="font-bold text-lg text-blue-600">17:00</p><p class="text-xs">Bukittinggi</p></div>
+                </div>
+                <p class="font-semibold mb-1">NPM - Mini Bus</p>
+                <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                  <i class="fas fa-snowflake"></i>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-sm text-gray-500">Tersedia: 9 Kursi</p>
+                  <p class="font-bold text-orange-500 text-lg">Rp 70.000</p>
+                </div>
+                <button class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Pesan Tiket</button>
+              </div>
+            </div>
+            
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const busSwiper = new Swiper('.bus-swiper', {
+    slidesPerView: 1.1,
+    spaceBetween: 16,
+    breakpoints: {
+      640: { slidesPerView: 2 },
+      768: { slidesPerView: 3 },
+      1024: { slidesPerView: 4 },
+    },
+    navigation: {
+      nextEl: '.bus-swiper-next',
+      prevEl: '.bus-swiper-prev',
+    },
+  });
+</script>
+
+
+
+<section id="kereta" class="py-10 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-6">Tiket Kereta Api</h2>
+
+    <div class="swiper kereta-swiper">
+      <div class="swiper-wrapper">
+        <!-- Tiket Kereta 1 -->
+        <div
+          class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+        >
+          <div class="p-4 text-base">
+            <div class="flex justify-between text-sm text-gray-600 mb-2">
+              <div>
+                <p class="font-bold text-lg text-blue-600">06:45</p>
+                <p class="text-xs">Stasiun Gambir (GMR)</p>
+              </div>
+              <div>
+                <p class="text-gray-500">8 jam 30 mnt</p>
+                <p class="text-xl">→</p>
+              </div>
+              <div>
+                <p class="font-bold text-lg text-blue-600">15:15</p>
+                <p class="text-xs">Stasiun Tugu Yogyakarta (YK)</p>
+              </div>
+            </div>
+
+            <p class="font-semibold mb-1">Argo Dwipangga - Eksekutif</p>
+            <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+              <i class="fas fa-snowflake"></i>
+              <i class="fas fa-plug"></i>
+            </div>
+
+            <div class="flex justify-between items-center mt-2">
+              <p class="text-sm text-gray-500">
+                Gerbong: 3B | Kursi Tersedia: 7
+              </p>
+              <p class="font-bold text-orange-500 text-lg">Rp 450.000</p>
+            </div>
+
+            <button
+              class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+            >
+              Pesan Tiket
+            </button>
+          </div>
+        </div>
+
+        <!-- Tiket Kereta 2 -->
+        <div
+          class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+        >
+          <div class="p-4 text-base">
+            <div class="flex justify-between text-sm text-gray-600 mb-2">
+              <div>
+                <p class="font-bold text-lg text-blue-600">21:00</p>
+                <p class="text-xs">Stasiun Pasar Senen (PSE)</p>
+              </div>
+              <div>
+                <p class="text-gray-500">11 jam</p>
+                <p class="text-xl">→</p>
+              </div>
+              <div>
+                <p class="font-bold text-lg text-blue-600">08:00</p>
+                <p class="text-xs">Stasiun Surabaya Gubeng (SGU)</p>
+              </div>
+            </div>
+
+            <p class="font-semibold mb-1">
+              Gaya Baru Malam Selatan - Ekonomi
+            </p>
+            <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+              <i class="fas fa-snowflake"></i>
+            </div>
+
+            <div class="flex justify-between items-center mt-2">
+              <p class="text-sm text-gray-500">
+                Gerbong: 7D | Kursi Tersedia: 5
+              </p>
+              <p class="font-bold text-orange-500 text-lg">Rp 200.000</p>
+            </div>
+
+            <button
+              class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+            >
+              Pesan Tiket
+            </button>
+          </div>
+        </div>
+
+        <!-- Tiket Kereta 3 -->
+        <div
+          class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+        >
+          <div class="p-4 text-base">
+            <div class="flex justify-between text-sm text-gray-600 mb-2">
+              <div>
+                <p class="font-bold text-lg text-blue-600">05:30</p>
+                <p class="text-xs">Stasiun Bandung (BD)</p>
+              </div>
+              <div>
+                <p class="text-gray-500">3 jam 15 mnt</p>
+                <p class="text-xl">→</p>
+              </div>
+              <div>
+                <p class="font-bold text-lg text-blue-600">08:45</p>
+                <p class="text-xs">Stasiun Jakarta (GMR)</p>
+              </div>
+            </div>
+            <p class="font-semibold mb-1">Lodaya Pagi - Bisnis</p>
+            <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+              <i class="fas fa-snowflake"></i>
+            </div>
+            <div class="flex justify-between items-center mt-2">
+              <p class="text-sm text-gray-500">
+                Gerbong: 2C | Kursi Tersedia: 9
+              </p>
+              <p class="font-bold text-orange-500 text-lg">Rp 250.000</p>
+            </div>
+            <button
+              class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+            >
+              Pesan Tiket
+            </button>
+          </div>
+        </div>
+
+        <!-- Tiket Kereta 4 -->
+        <div
+          class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+        >
+          <div class="p-4 text-base">
+            <div class="flex justify-between text-sm text-gray-600 mb-2">
+              <div>
+                <p class="font-bold text-lg text-blue-600">16:00</p>
+                <p class="text-xs">Stasiun Semarang Tawang (SMT)</p>
+              </div>
+              <div>
+                <p class="text-gray-500">6 jam</p>
+                <p class="text-xl">→</p>
+              </div>
+              <div>
+                <p class="font-bold text-lg text-blue-600">22:00</p>
+                <p class="text-xs">Stasiun Surabaya Pasar Turi (SBI)</p>
+              </div>
+            </div>
+            <p class="font-semibold mb-1">Jayabaya - Eksekutif</p>
+            <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+              <i class="fas fa-snowflake"></i>
+              <i class="fas fa-plug"></i>
+            </div>
+            <div class="flex justify-between items-center mt-2">
+              <p class="text-sm text-gray-500">
+                Gerbong: 5A | Kursi Tersedia: 5
+              </p>
+              <p class="font-bold text-orange-500 text-lg">Rp 320.000</p>
+            </div>
+            <button
+              class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+            >
+              Pesan Tiket
+            </button>
+          </div>
+        </div>
+
+        <!-- Tiket Kereta 5 -->
+        <div
+          class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+        >
+          <div class="p-4 text-base">
+            <div class="flex justify-between text-sm text-gray-600 mb-2">
+              <div>
+                <p class="font-bold text-lg text-blue-600">12:00</p>
+                <p class="text-xs">Stasiun Malang (ML)</p>
+              </div>
+              <div>
+                <p class="text-gray-500">5 jam 45 mnt</p>
+                <p class="text-xl">→</p>
+              </div>
+              <div>
+                <p class="font-bold text-lg text-blue-600">17:45</p>
+                <p class="text-xs">Stasiun Yogyakarta (YK)</p>
+              </div>
+            </div>
+            <p class="font-semibold mb-1">Majapahit - Ekonomi</p>
+            <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+              <i class="fas fa-snowflake"></i>
+            </div>
+            <div class="flex justify-between items-center mt-2">
+              <p class="text-sm text-gray-500">
+                Gerbong: 4D | Kursi Tersedia: 9
+              </p>
+              <p class="font-bold text-orange-500 text-lg">Rp 180.000</p>
+            </div>
+            <button
+              class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+            >
+              Pesan Tiket
+            </button>
+          </div>
+        </div>
+
+        <!-- Tiket Kereta 6 -->
+        <div
+          class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+        >
+          <div class="p-4 text-base">
+            <div class="flex justify-between text-sm text-gray-600 mb-2">
+              <div>
+                <p class="font-bold text-lg text-blue-600">07:45</p>
+                <p class="text-xs">Stasiun Solo Balapan (SLO)</p>
+              </div>
+              <div>
+                <p class="text-gray-500">3 jam 40 mnt</p>
+                <p class="text-xl">→</p>
+              </div>
+              <div>
+                <p class="font-bold text-lg text-blue-600">11:25</p>
+                <p class="text-xs">Stasiun Semarang (SMT)</p>
+              </div>
+            </div>
+            <p class="font-semibold mb-1">Kalijaga - Ekonomi</p>
+            <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+              <i class="fas fa-snowflake"></i>
+            </div>
+            <div class="flex justify-between items-center mt-2">
+              <p class="text-sm text-gray-500">
+                Gerbong: 6C | Kursi Tersedia: 8
+              </p>
+              <p class="font-bold text-orange-500 text-lg">Rp 130.000</p>
+            </div>
+            <button
+              class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+            >
+              Pesan Tiket
+            </button>
+          </div>
+        </div>
+
+        <!-- Tambahan tiket bisa kamu lanjutkan -->
+      </div>
+
+      <!-- Navigasi Swiper -->
+      <div
+        class="swiper-button-next"
+        style="font-size: 16px; width: 30px; height: 30px"
+      ></div>
+      <div
+        class="swiper-button-prev"
+        style="font-size: 16px; width: 30px; height: 30px"
+      ></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .swiper-button-next,
+  .swiper-button-prev {
+    font-size: 16px; /* Ukuran font ikon */
+    width: 30px; /* Ukuran area klik horizontal */
+    height: 30px; /* Ukuran area klik vertikal */
+    background-color: rgba(0, 0, 0, 0.1); /* opsional biar lebih kalem */
+    border-radius: 50%;
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 16px; /* Ukuran ikon panah */
+    color: #333; /* Warna ikon */
+  }
+</style>
+
+<script>
+  const keretaSwiper = new Swiper(".kereta-swiper", {
+    slidesPerView: 1.2,
+    spaceBetween: 15,
+    loop: false,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+      640: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+  });
+</script>
+
+
+
+  <!-- Footer with Social Media -->
+  <footer class="bg-gray-800 text-white py-10 mt-10">
+    <div class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-5 gap-6 text-sm">
+      <div>
+        <h5 class="font-semibold mb-3">Produk</h5>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Tiket Pesawat</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Hotel</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">To Do</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Rental Mobil</a></li>
+          <!-- <li><a href="#" class="hover:text-blue-300 smooth-transition">Event</a></li> -->
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Xperience</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Kres-Nova PayLater</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-semibold mb-3">Perusahaan</h5>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Tentang Kami</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Karir</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Blog</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Pusat Media</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Kres-Nova Partners</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Kres-Nova Ads</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-semibold mb-3">Dukungan</h5>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Pusat Bantuan</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Syarat & Ketentuan</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Kebijakan Privasi</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Daftarkan Hotel Anda</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Daftarkan Bisnis Anda</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Kres-Nova Affiliate</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-semibold mb-3">Hubungi Kami</h5>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">Support Center</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">+62 856-1375-843</a></li>
+          <li><a href="#" class="hover:text-blue-300 smooth-transition">cs@Kres-Nova.com</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="font-semibold mb-3">Ikuti Kami</h5>
+        <div class="flex space-x-3 mb-4">
+          <a href="#" class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-500 smooth-transition">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-300 smooth-transition">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-500 smooth-transition">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-500 smooth-transition">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </div>
+        <h5 class="font-semibold mb-3">Unduh Aplikasi</h5>
+        <div class="space-y-2">
+          <a href="#" class="block">
+            <img src="https://images.seeklogo.com/logo-png/32/2/appstore-logo-png_seeklogo-326280.png" alt="App Store" class="h-10">
+          </a>
+          <a href="#" class="block">
+            <img src="https://images.seeklogo.com/logo-png/31/2/google-play-logo-png_seeklogo-318439.png" alt="Google Play" class="h-10">
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-4 mt-8 pt-6 border-t border-gray-700">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="text-gray-400 text-xs mb-4 md:mb-0">© 2025 Kres-Nova. Seluruh hak cipta dilindungi.</div>
+        <div class="flex space-x-4">
+          <img src="https://images.seeklogo.com/logo-png/23/2/bca-bank-logo-png_seeklogo-232742.png" alt="Payment" class="h-20">
+          <img src="https://images.seeklogo.com/logo-png/39/2/dana-e-wallet-app-logo-png_seeklogo-399948.png" alt="Payment" class="h-20">
+          <img src="https://images.seeklogo.com/logo-png/45/2/bank-bri-logo-png_seeklogo-459990.png" alt="Payment" class="h-16">
+          <img src="https://images.seeklogo.com/logo-png/1/2/bank-mandiri-logo-png_seeklogo-16290.png" alt="Payment" class="h-16">
+
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Toggle mobile menu
+    function toggleMenu() {
+      const nav = document.getElementById('mobile-menu');
+      nav.classList.toggle('hidden');
+    }
+
+    // Toggle trip type
+    function toggleTripType(isRoundTrip) {
+      const returnDate = document.getElementById('return-date');
+      returnDate.disabled = !isRoundTrip;
+      if (!isRoundTrip) {
+        returnDate.value = '';
+      }
+    }
+
+    // Initialize date pickers
+    flatpickr("#departure-date", {
+      minDate: "today",
+      dateFormat: "d M Y",
+      locale: "id",
+      defaultDate: new Date(),
+      onChange: function(selectedDates, dateStr, instance) {
+        const returnDatePicker = document.getElementById('return-date')._flatpickr;
+        if (returnDatePicker) {
+          returnDatePicker.set('minDate', dateStr);
+        }
+      }
+    });
+
+    flatpickr("#return-date", {
+      minDate: "today",
+      dateFormat: "d M Y",
+      locale: "id"
+    });
+
+    // Sample data for autocomplete
+    const airports = [
+      { name: "Soekarno-Hatta (CGK)", city: "Jakarta" },
+      { name: "Ngurah Rai (DPS)", city: "Denpasar, Bali" },
+      { name: "Juanda (SUB)", city: "Surabaya" },
+      { name: "Kuala Namu (KNO)", city: "Medan" },
+      { name: "Husein Sastranegara (BDO)", city: "Bandung" },
+      { name: "Adisutjipto (JOG)", city: "Yogyakarta" },
+      { name: "Changi (SIN)", city: "Singapore" },
+      { name: "Suvarnabhumi (BKK)", city: "Bangkok" },
+      { name: "Kuala Lumpur (KUL)", city: "Kuala Lumpur" },
+      { name: "Ninoy Aquino (MNL)", city: "Manila" }
+    ];
+
+    // Initialize autocomplete for "From" input
+    const fromAutoComplete = new autoComplete({
+      selector: "#from-input",
+      // placeHolder: "Dari (Kota atau Bandara)",
+      data: {
+        src: airports,
+        keys: ["name", "city"],
+        cache: true
+      },
+      resultsList: {
+        element: (list, data) => {
+          if (!data.results.length) {
+            const message = document.createElement("div");
+            message.setAttribute("class", "no-result");
+            message.innerHTML = `<span>No results found for "${data.query}"</span>`;
+            list.appendChild(message);
+          }
+        },
+        noResults: true,
+        maxResults: 10,
+      },
+      resultItem: {
+        element: (item, data) => {
+          item.innerHTML = `
+            <div class="p-2 hover:bg-gray-100 cursor-pointer">
+              <div class="font-medium">${data.match}</div>
+              <div class="text-xs text-gray-500">${data.value.city}</div>
+            </div>
+          `;
+        },
+        highlight: true
+      },
+      events: {
+        input: {
+          focus: () => {
+            const fromDropdown = document.getElementById('from-autocomplete');
+            fromDropdown.classList.remove('hidden');
+          }
+        }
+      }
+    });
+
+    document.getElementById('from-input').addEventListener('selection', function(event) {
+      const feedback = event.detail;
+      document.getElementById('from-input').value = feedback.selection.value.name;
+      document.getElementById('from-autocomplete').classList.add('hidden');
+    });
+
+    // Initialize autocomplete for "To" input
+    const toAutoComplete = new autoComplete({
+      selector: "#to-input",
+      // placeHolder: "Ke (Kota atau Bandara)",
+      data: {
+        src: airports,
+        keys: ["name", "city"],
+        cache: true
+      },
+      resultsList: {
+        element: (list, data) => {
+          if (!data.results.length) {
+            const message = document.createElement("div");
+            message.setAttribute("class", "no-result");
+            message.innerHTML = `<span>No results found for "${data.query}"</span>`;
+            list.appendChild(message);
+          }
+        },
+        noResults: true,
+        maxResults: 10,
+      },
+      resultItem: {
+        element: (item, data) => {
+          item.innerHTML = `
+            <div class="p-2 hover:bg-gray-100 cursor-pointer">
+              <div class="font-medium">${data.match}</div>
+              <div class="text-xs text-gray-500">${data.value.city}</div>
+            </div>
+          `;
+        },
+        highlight: true
+      },
+      events: {
+        input: {
+          focus: () => {
+            const toDropdown = document.getElementById('to-autocomplete');
+            toDropdown.classList.remove('hidden');
+          }
+        }
+      }
+    });
+
+    document.getElementById('to-input').addEventListener('selection', function(event) {
+      const feedback = event.detail;
+      document.getElementById('to-input').value = feedback.selection.value.name;
+      document.getElementById('to-autocomplete').classList.add('hidden');
+    });
+
+    // Close autocomplete dropdowns when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.autocomplete-input')) {
+        document.getElementById('from-autocomplete').classList.add('hidden');
+        document.getElementById('to-autocomplete').classList.add('hidden');
+      }
+    });
+
+    // Search button loading animation
+    document.getElementById('search-button').addEventListener('click', function() {
+      const searchText = document.getElementById('search-text');
+      const searchLoading = document.getElementById('search-loading');
+      
+      searchText.classList.add('hidden');
+      searchLoading.classList.remove('hidden');
+      
+      // Simulate API call
+      setTimeout(function() {
+        searchText.classList.remove('hidden');
+        searchLoading.classList.add('hidden');
+        alert('Pencarian tiket pesawat sedang diproses!');
+      }, 2000);
+    });
+
+    // Simulate loading promo data
+
+
+
+ 
+
+
+  // Dropdown Simpan
+  document.getElementById('simpanDropdown').addEventListener('click', function(e) {
+    e.stopPropagation();
+    const simpanMenu = document.getElementById('dropdownSimpan');
+    closeAllDropdowns();
+    simpanMenu.classList.toggle('hidden');
+  });
+
+
+  // Tutup dropdown saat klik di luar
+  document.addEventListener('click', function() {
+    closeAllDropdowns();
+  });
+  
+         // Script Tab Interaktif
+       document.querySelectorAll('#tab-menu .tab').forEach(tab => {
+         tab.addEventListener('click', function () {
+          // Ubah warna tab aktif
+          document.querySelectorAll('#tab-menu .tab').forEach(t => {
+            t.classList.remove('bg-white', 'text-blue-500');
+            t.classList.add('bg-blue-400', 'text-white');
+          });
+          this.classList.add('bg-white', 'text-blue-500');
+          this.classList.remove('bg-blue-400', 'text-white');
+          
+          // Tampilkan konten sesuai tab
+           const selectedTab = this.getAttribute('data-tab');
+           document.querySelectorAll('#tab-content .tab-panel').forEach(panel => {
+            if (panel.getAttribute('data-content') === selectedTab) {
+              panel.classList.remove('hidden');
+              panel.classList.add('block');
+            } 
+            else {
+              panel.classList.remove('block');
+              panel.classList.add('hidden');
+            }
+          });
+        });
+      });
+
+         // Global untuk semua datepicker biasa
+         flatpickr(".datepicker", {
+          minDate: "today",
+          defaultDate: new Date(), // Isi otomatis dengan hari ini
+          altInput: true,
+          altFormat: "j F Y", // Tampilan untuk user
+          dateFormat: "Y-m-d", // Format yang dikirim ke backend
+          locale: "id"
+        });
+
+          // Validasi Check-in dan Check-out (Hotel)
+           const checkin = flatpickr("input[placeholder='Check-in']", {
+            minDate: "today",
+            defaultDate: new Date(),
+            altInput: true,
+            altFormat: "j F Y",
+            dateFormat: "Y-m-d",
+            locale: "id",
+            onChange: function(selectedDates, dateStr) {
+              checkout.set('minDate', dateStr);
+            }
+          });
+          
+             const checkout = flatpickr("input[placeholder='Check-out']", {
+              minDate: "today",
+              defaultDate: new Date(),
+              altInput: true,
+              altFormat: "j F Y",
+              dateFormat: "Y-m-d",
+              locale: "id"
+            });
+
+               // Validasi Tanggal Berangkat dan Pulang (Pesawat & Combo) 
+                 const depart = flatpickr("input[placeholder='Tanggal Keberangkatan']", {
+                  minDate: "today",
+                  defaultDate: new Date(),
+                  altInput: true,
+                  altFormat: "j F Y",
+                  dateFormat: "Y-m-d",
+                  locale: "id",
+                  onChange: function(selectedDates, dateStr) {
+                    returnFlight.set('minDate', dateStr);
+                  }
+                });
+                
+                     const returnFlight = flatpickr("input[placeholder='Tanggal Pulang']", {
+                      minDate: "today",
+                      defaultDate: new Date(),
+                      altInput: true,
+                      altFormat: "j F Y",
+                      dateFormat: "Y-m-d",
+                      locale: "id"
+                    });
+   </script>
+
+<script src="script.js"></script>
+
+  </body>
+</html>

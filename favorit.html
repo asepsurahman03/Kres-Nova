@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kres-Nova - Tiket Pesawat Murah & Promo Hotel</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Animasi untuk dropdown */
+      .dropdown-menu {
+        transition: all 0.3s ease;
+      }
+
+      .smooth-transition {
+        transition: all 0.2s ease;
+      }
+      .smooth-transition {
+        transition: all 0.3s ease;
+      }
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      }
+      .promo-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .loading-spinner {
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      /* Tambahkan ini di bagian style */
+      .promo-slider-container {
+        position: relative;
+        overflow: visible;
+        width: 100%;
+        height: 200px; /* Sesuaikan tinggi sesuai kebutuhan */
+      }
+
+      .promo-slider-track {
+        display: flex;
+        transition: transform 0.5s ease;
+        height: 100%;
+      }
+
+      .promo-slide {
+        min-width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .slider-nav {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .slider-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+      }
+
+      .slider-dot.active {
+        background-color: white;
+      }
+
+      /* Styling untuk tab yang aktif */
+      .tab.active {
+        background-color: white;
+        color: blue;
+        border-bottom: 2px solid blue;
+      }
+
+      /* Styling untuk konten tab */
+      .tab-pane {
+        display: none;
+      }
+
+      .tab-pane.active {
+        display: block;
+      }
+
+      .swiper-button-prev-custom,
+      .swiper-button-next-custom {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        background-color: rgba(0, 0, 0, 0.4);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+      }
+
+      .swiper-button-prev-custom:hover,
+      .swiper-button-next-custom:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .swiper-button-prev-custom {
+        left: -10px; /* bisa disesuaikan */
+      }
+
+      .swiper-button-next-custom {
+        right: -10px; /* bisa disesuaikan */
+      }
+
+      .swiper-button-prev-custom,
+      .swiper-button-next-custom {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 10;
+        transition: background-color 0.3s ease;
+      }
+
+      .swiper-button-prev-custom {
+        left: -20px;
+      }
+
+      .swiper-button-next-custom {
+        right: -20px;
+      }
+
+      .swiper-button-prev-custom:hover,
+      .swiper-button-next-custom:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .slider-dot {
+        width: 10px;
+        height: 10px;
+        background-color: #ccc;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .slider-dot.active {
+        background-color: #f43f5e; /* contoh: merah muda, kamu bisa sesuaikan */
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 font-sans">
+    <section
+      class="relative bg-cover bg-center h-screen"
+      style="background-image: url('images/pexels-rpnickson-2478248.jpg')"
+    >
+      <!-- Header with Smooth Scroll Links -->
+      <header
+        id="main-header"
+        class="bg-white/30 backdrop-blur-md shadow-md sticky top-0 z-50 transition duration-300"
+      >
+        <div
+          class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center"
+        >
+          <!-- Logo -->
+          <a href="index.html" class="flex items-center">
+            <img
+              src="LogoKN1.png"
+              alt="Logo Kres-Nova"
+              class="h-8 w-8 mr-2 object-contain"
+            />
+            <p
+              class="font-montserrat font-bold text-2xl text-white"
+              style="font-family: 'Montserrat', sans-serif"
+            >
+              Kres-Nova
+            </p>
+          </a>
+
+          <!-- Nav Desktop -->
+          <nav class="hidden md:flex space-x-6 text-sm font-medium">
+            <a href="#pesawat-section" class="text-white hover:text-blue-300"
+              >Tiket Pesawat</a
+            >
+            <a href="#hotel-section" class="text-white hover:text-blue-300"
+              >Hotel</a
+            >
+            <a
+              href="#rental-mobil-section"
+              class="text-white hover:text-blue-300"
+              >Rental Mobil</a
+            >
+            <a href="#tiket-bus-section" class="text-white hover:text-blue-300"
+              >Bus</a
+            >
+            <a href="#kereta-section" class="text-white hover:text-blue-300"
+              >Kereta Api</a
+            >
+            <a href="bantuan.html" class="text-white hover:text-blue-300"
+              >Butuh Bantuan?</a
+            >
+
+            <!-- Dropdown Desktop -->
+            <div class="relative" id="dropdown-pesanan-wrapper">
+              <button
+                id="dropdown-pesanan-btn"
+                class="text-white hover:text-blue-300 flex items-center"
+              >
+                Pesanan <i class="fas fa-chevron-down ml-1 text-xs"></i>
+              </button>
+              <div
+                id="dropdown-pesanan-menu"
+                class="absolute hidden bg-white text-black rounded shadow-lg mt-2 w-48 py-2 z-50"
+              >
+                <a
+                  href="wishlist.html"
+                  class="block px-4 py-2 hover:bg-gray-100"
+                  >Wishlist</a
+                >
+                <a href="history.html" class="block px-4 py-2 hover:bg-gray-100"
+                  >Histori Pesanan</a
+                >
+                <a href="favorit.html" class="block px-4 py-2 hover:bg-gray-100"
+                  >Item Favorit</a
+                >
+              </div>
+            </div>
+          </nav>
+
+          <!-- Language + Login + Daftar (Desktop) -->
+          <div class="hidden md:flex space-x-3 items-center">
+            <!-- Language Dropdown -->
+            <div class="relative group">
+              <button class="text-white hover:text-blue-300">
+                <i class="fas fa-globe mr-1"></i> ID
+              </button>
+              <div
+                class="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-2 py-2 w-32 right-0 z-50"
+              >
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >Indonesia</a
+                >
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >English</a
+                >
+              </div>
+            </div>
+
+            <a
+              href="logincoba.html"
+              class="border border-white text-white px-4 py-1.5 rounded text-sm hover:bg-white hover:text-blue-500 transition"
+              >Masuk</a
+            >
+            <a
+              href="singup.html"
+              class="bg-blue-500 text-white px-4 py-1.5 rounded text-sm hover:bg-blue-600 transition"
+              >Daftar</a
+            >
+          </div>
+
+          <!-- Burger Button (Mobile) -->
+          <button
+            id="burger"
+            class="md:hidden text-white text-2xl focus:outline-none"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <!-- Mobile Slide Menu -->
+        <div
+          id="mobile-menu"
+          class="fixed top-0 left-0 w-full bg-black text-white transform -translate-y-full transition-all duration-300 ease-in-out z-50 shadow-lg overflow-y-auto"
+        >
+          <div
+            class="p-4 flex justify-between items-center border-b border-gray-600"
+          >
+            <p class="text-lg font-semibold">Kres-Nova</p>
+            <button id="close-mobile-menu" class="text-xl text-white">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <div class="px-4 py-2">
+            <a href="#pesawat-section" class="block py-2 hover:text-blue-500"
+              >Tiket Pesawat</a
+            >
+            <a href="#hotel-section" class="block py-2 hover:text-blue-500"
+              >Hotel</a
+            >
+            <a
+              href="#rental-mobil-section"
+              class="block py-2 hover:text-blue-500"
+              >Rental Mobil</a
+            >
+            <a href="#tiket-bus-section" class="block py-2 hover:text-blue-500"
+              >Bus</a
+            >
+            <a href="#kereta-section" class="block py-2 hover:text-blue-500"
+              >Kereta Api</a
+            >
+            <a href="bantuan.html" class="block py-2 hover:text-blue-500"
+              >Butuh Bantuan?</a
+            >
+
+            <div class="pt-2">
+              <p class="font-semibold mb-1">Pesanan</p>
+              <a
+                href="wishlist.html"
+                class="block px-2 py-1 hover:bg-gray-700 rounded"
+                >Wishlist</a
+              >
+              <a
+                href="history.html"
+                class="block px-2 py-1 hover:bg-gray-700 rounded"
+                >Histori Pesanan</a
+              >
+              <a
+                href="favorit.html"
+                class="block px-2 py-1 hover:bg-gray-700 rounded"
+                >Item Favorit</a
+              >
+            </div>
+          </div>
+        </div>
+      </header>
+    </section>
+
+    <!-- Tiket Pesawat Populer -->
+    <section id="pesawat-section" class="py-10 bg-gray-50 relative">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl font-bold mb-6">Tiket Pesawat Populer</h2>
+
+        <!-- Wrapper tombol dan carousel -->
+        <div class="relative">
+          <!-- Tombol kiri -->
+          <div class="swiper-button-prev-custom">
+            <span>&lt;</span>
+          </div>
+
+          <!-- Tombol kanan -->
+          <div class="swiper-button-next-custom">
+            <span>&gt;</span>
+          </div>
+
+          <!-- Carousel -->
+          <div class="swiper-container">
+            <div class="swiper-wrapper">
+              <!-- Item Tiket -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/OIP.jpg"
+                  alt="Jakarta ke Bali"
+                  class="w-full h-40 object-cover"
+                />
+                <div
+                  class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded"
+                >
+                  Pulang Pergi
+                </div>
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 1.250.000
+                  </p>
+                  <p class="font-semibold">Jakarta → Bali</p>
+                  <p class="text-gray-500 text-sm">10 - 13 Mei 2025</p>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/surabaya.jpg"
+                  alt="Jakarta ke Surabaya"
+                  class="w-full h-40 object-cover"
+                />
+                <div
+                  class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded"
+                >
+                  Pulang Pergi
+                </div>
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">Rp 750.000</p>
+                  <p class="font-semibold">Jakarta → Surabaya</p>
+                  <p class="text-gray-500 text-sm">9 - 12 Mei 2025</p>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/makassar_590.jpg"
+                  alt="Jakarta ke Makassar"
+                  class="w-full h-40 object-cover"
+                />
+                <div
+                  class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded"
+                >
+                  Pulang Pergi
+                </div>
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 1.350.000
+                  </p>
+                  <p class="font-semibold">Jakarta → Makassar</p>
+                  <p class="text-gray-500 text-sm">8 - 11 Mei 2025</p>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/indonesia-borodobur.jpg"
+                  alt="Bandung ke Yogyakarta"
+                  class="w-full h-40 object-cover"
+                />
+                <div
+                  class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded"
+                >
+                  Pulang Pergi
+                </div>
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">Rp 690.000</p>
+                  <p class="font-semibold">Bandung → Yogyakarta</p>
+                  <p class="text-gray-500 text-sm">11 - 14 Mei 2025</p>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/R.jpg"
+                  alt="Jakarta ke Balikpapan"
+                  class="w-full h-40 object-cover"
+                />
+                <div
+                  class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded"
+                >
+                  Pulang Pergi
+                </div>
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 1.050.000
+                  </p>
+                  <p class="font-semibold">Jakarta → Balikpapan</p>
+                  <p class="text-gray-500 text-sm">12 - 15 Mei 2025</p>
+                </div>
+              </div>
+
+              <!-- Item Tiket Tambahan -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/OIP (1).jpg"
+                  alt="Surabaya ke Denpasar"
+                  class="w-full h-40 object-cover"
+                />
+                <div
+                  class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded"
+                >
+                  Pulang Pergi
+                </div>
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">Rp 820.000</p>
+                  <p class="font-semibold">Surabaya → Denpasar</p>
+                  <p class="text-gray-500 text-sm">13 - 16 Mei 2025</p>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/OIP (2).jpg"
+                  alt="Jakarta ke Medan"
+                  class="w-full h-40 object-cover"
+                />
+                <div
+                  class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded"
+                >
+                  Pulang Pergi
+                </div>
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 1.180.000
+                  </p>
+                  <p class="font-semibold">Jakarta → Medan</p>
+                  <p class="text-gray-500 text-sm">14 - 17 Mei 2025</p>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/OIP (3).jpg"
+                  alt="Yogyakarta ke Lombok"
+                  class="w-full h-40 object-cover"
+                />
+                <div
+                  class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded"
+                >
+                  Pulang Pergi
+                </div>
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">Rp 950.000</p>
+                  <p class="font-semibold">Yogyakarta → Lombok</p>
+                  <p class="text-gray-500 text-sm">15 - 18 Mei 2025</p>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/OIP (4).jpg"
+                  alt="Bandung ke Padang"
+                  class="w-full h-40 object-cover"
+                />
+                <div
+                  class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded"
+                >
+                  Pulang Pergi
+                </div>
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">Rp 990.000</p>
+                  <p class="font-semibold">Bandung → Padang</p>
+                  <p class="text-gray-500 text-sm">16 - 19 Mei 2025</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <!-- Swiper Init -->
+    <script>
+      const swiper = new Swiper(".swiper-container", {
+        slidesPerView: 1.2, // tampilkan 1.2 item di mobile (otomatis adaptif)
+        spaceBetween: 16,
+        centeredSlides: false,
+        breakpoints: {
+          640: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+          1024: {
+            slidesPerView: 4,
+          },
+        },
+        navigation: {
+          nextEl: ".swiper-button-next-custom",
+          prevEl: ".swiper-button-prev-custom",
+        },
+      });
+    </script>
+
+    <style>
+      .swiper-container {
+        overflow: hidden; /* ini mencegah meluber */
+        width: 100%;
+      }
+
+      .swiper-wrapper {
+        display: flex;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        box-sizing: border-box;
+      }
+
+      .swiper-button-prev-custom,
+      .swiper-button-next-custom {
+        position: absolute;
+        top: 40%;
+        z-index: 10;
+        background: rgba(0, 0, 0, 0.4);
+        color: #fff;
+        padding: 8px;
+        border-radius: 9999px;
+        cursor: pointer;
+        font-size: 18px;
+        user-select: none;
+      }
+
+      .swiper-button-prev-custom {
+        left: 0.5rem;
+      }
+
+      .swiper-button-next-custom {
+        right: 0.5rem;
+      }
+
+      .swiper-slide {
+        width: auto;
+        flex-shrink: 0;
+        box-sizing: border-box;
+      }
+
+      @media (max-width: 640px) {
+        .swiper-slide {
+          max-width: 90%;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .swiper-button-prev-custom,
+        .swiper-button-next-custom {
+          top: 35%;
+          padding: 6px;
+          font-size: 16px;
+        }
+      }
+    </style>
+
+    <!-- Hotel Section -->
+    <!-- Hotel Populer -->
+    <section id="hotel-section" class="py-10 bg-white relative">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl font-bold mb-6">Hotel Populer</h2>
+
+        <!-- Wrapper tombol dan carousel -->
+        <div class="relative">
+          <!-- Tombol kiri -->
+          <div
+            class="hotel-swiper-prev absolute top-1/2 -left-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-800"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </div>
+
+          <!-- Tombol kanan -->
+          <div
+            class="hotel-swiper-next absolute top-1/2 -right-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-800"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
+
+          <!-- Carousel -->
+          <div class="swiper-container hotel-swiper">
+            <div class="swiper-wrapper">
+              <!-- Item Hotel -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/235104_15082612180035086935.jpg"
+                  alt="Hotel Bali Indah"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 450.000 / malam
+                  </p>
+                  <p class="font-semibold mb-1">Hotel Bali Indah</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>☆</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.2)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Kuta, Bali</p>
+                </div>
+              </div>
+
+              <!-- Hotel 2 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/c92a1e81a2fd756808d14fd4ccd04956.jpg"
+                  alt="Grand Jakarta Hotel"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 650.000 / malam
+                  </p>
+                  <p class="font-semibold mb-1">Grand Jakarta Hotel</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>⭐</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.8)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Sudirman, Jakarta</p>
+                </div>
+              </div>
+
+              <!-- Hotel 3 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/holiday-inn-bandung-4963725377-4x3.jpg"
+                  alt="Bandung Cozy Inn"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 390.000 / malam
+                  </p>
+                  <p class="font-semibold mb-1">Bandung Cozy Inn</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>☆</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.1)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Dago, Bandung</p>
+                </div>
+              </div>
+
+              <!-- Hotel 4 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/4e7b68f6dfb5b7fe6d842a20fa62bfa1.jpg"
+                  alt="Lombok Ocean View"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 520.000 / malam
+                  </p>
+                  <p class="font-semibold mb-1">Lombok Ocean View</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>☆</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.3)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Senggigi, Lombok</p>
+                </div>
+              </div>
+
+              <!-- Hotel 5 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/OIP (6).jpg"
+                  alt="Surabaya Comfort Stay"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 410.000 / malam
+                  </p>
+                  <p class="font-semibold mb-1">Surabaya Comfort Stay</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>☆</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.0)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Gubeng, Surabaya</p>
+                </div>
+              </div>
+
+              <!-- Hotel 6 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/OIP (7).jpg"
+                  alt="Yogyakarta Heritage Hotel"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 480.000 / malam
+                  </p>
+                  <p class="font-semibold mb-1">Yogyakarta Heritage Hotel</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>⭐</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.7)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Malioboro, Yogyakarta</p>
+                </div>
+              </div>
+
+              <!-- Hotel 7 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/OIP (8).jpg"
+                  alt="Medan Royal Inn"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 430.000 / malam
+                  </p>
+                  <p class="font-semibold mb-1">Medan Royal Inn</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>☆</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.1)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Medan Baru, Medan</p>
+                </div>
+              </div>
+
+              <!-- Hotel 8 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/R (1).jpg"
+                  alt="Makassar Sea View"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 470.000 / malam
+                  </p>
+                  <p class="font-semibold mb-1">Makassar Sea View</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>⭐</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.6)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Losari, Makassar</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Swiper Init untuk Hotel -->
+    <script>
+      const hotelSwiper = new Swiper(".hotel-swiper", {
+        slidesPerView: 1.2,
+        spaceBetween: 16,
+        centeredSlides: false,
+        breakpoints: {
+          640: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+          1024: {
+            slidesPerView: 4,
+          },
+        },
+        navigation: {
+          nextEl: ".hotel-swiper-next",
+          prevEl: ".hotel-swiper-prev",
+        },
+      });
+    </script>
+
+    <!-- Rental Mobil Section -->
+    <section id="rental-mobil-section" class="py-10 bg-white relative">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl font-bold mb-6">Rental Mobil Populer</h2>
+
+        <!-- Wrapper tombol dan carousel -->
+        <div class="relative">
+          <!-- Tombol kiri -->
+          <div
+            class="rental-swiper-prev absolute top-1/2 -left-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-800"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </div>
+
+          <!-- Tombol kanan -->
+          <div
+            class="rental-swiper-next absolute top-1/2 -right-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-gray-800"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
+
+          <!-- Carousel -->
+          <div class="swiper-container rental-swiper">
+            <div class="swiper-wrapper">
+              <!-- Item Mobil 1 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/R (7).jpg"
+                  alt="Toyota Avanza"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 350.000 / hari
+                  </p>
+                  <p class="font-semibold mb-1">Toyota Avanza</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>☆</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.3)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Jakarta</p>
+                  <p class="text-green-600 text-sm mt-1">Dengan Pengemudi</p>
+                </div>
+              </div>
+
+              <!-- Item Mobil 2 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer relative max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/R (8).jpg"
+                  alt="Toyota Innova Reborn"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 550.000 / hari
+                  </p>
+                  <p class="font-semibold mb-1">Toyota Innova Reborn</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>⭐</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.8)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Bandung</p>
+                  <p class="text-green-600 text-sm mt-1">Dengan Pengemudi</p>
+                </div>
+              </div>
+
+              <!-- Item Mobil 3 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/2af8872a9d832458fe465d71b37cf74d.jpg"
+                  alt="Honda Brio"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 280.000 / hari
+                  </p>
+                  <p class="font-semibold mb-1">Honda Brio</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>☆</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.1)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Surabaya</p>
+                  <p class="text-red-600 text-sm mt-1">Tanpa Pengemudi</p>
+                </div>
+              </div>
+
+              <!-- Item Mobil 4 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/innova.jpg"
+                  alt="Toyota Fortuner"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 1.000.000 / hari
+                  </p>
+                  <p class="font-semibold mb-1">Toyota Fortuner</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>⭐</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.9)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Jakarta</p>
+                  <p class="text-green-600 text-sm mt-1">Dengan Pengemudi</p>
+                </div>
+              </div>
+
+              <!-- Item Mobil 5 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/R (9).jpg"
+                  alt="Suzuki Ertiga"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 370.000 / hari
+                  </p>
+                  <p class="font-semibold mb-1">Suzuki Ertiga</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>☆</span>
+                    <span class="text-sm text-gray-600 ml-2">(4.2)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Yogyakarta</p>
+                  <p class="text-red-600 text-sm mt-1">Tanpa Pengemudi</p>
+                </div>
+              </div>
+
+              <!-- Item Mobil 6 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition cursor-pointer max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <img
+                  src="images/2040.png"
+                  alt="Toyota Alphard"
+                  class="w-full h-40 object-cover"
+                />
+                <div class="p-4 text-base">
+                  <p class="font-bold text-blue-600 text-xl mb-1">
+                    Rp 2.500.000 / hari
+                  </p>
+                  <p class="font-semibold mb-1">Toyota Alphard</p>
+                  <div class="flex items-center text-yellow-500 mb-1">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span
+                    ><span>⭐</span>
+                    <span class="text-sm text-gray-600 ml-2">(5.0)</span>
+                  </div>
+                  <p class="text-gray-500 text-sm">Bali</p>
+                  <p class="text-green-600 text-sm mt-1">Dengan Pengemudi</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Swiper Init untuk Rental Mobil -->
+    <script>
+      const rentalSwiper = new Swiper(".rental-swiper", {
+        slidesPerView: 1.2,
+        spaceBetween: 16,
+        centeredSlides: false,
+        breakpoints: {
+          640: { slidesPerView: 2 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 },
+        },
+        navigation: {
+          nextEl: ".rental-swiper-next",
+          prevEl: ".rental-swiper-prev",
+        },
+      });
+    </script>
+
+    <!-- Tiket Bus Section -->
+    <!-- Tiket Bus Section -->
+    <section id="tiket-bus-section" class="py-10 bg-gray-50 relative">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl font-bold mb-6">Tiket Bus Populer</h2>
+
+        <div class="relative">
+          <!-- Navigasi -->
+          <div
+            class="bus-swiper-prev absolute top-1/2 -left-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition"
+          >
+            <i class="fas fa-chevron-left text-gray-800"></i>
+          </div>
+          <div
+            class="bus-swiper-next absolute top-1/2 -right-4 z-10 transform -translate-y-1/2 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100 transition"
+          >
+            <i class="fas fa-chevron-right text-gray-800"></i>
+          </div>
+
+          <!-- Carousel -->
+          <div class="swiper-container bus-swiper">
+            <div class="swiper-wrapper">
+              <!-- Tiket 1 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <div class="p-4 text-base">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">08:00</p>
+                      <p class="text-xs">Jakarta</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">6 jam</p>
+                      <p class="text-xl">→</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">14:00</p>
+                      <p class="text-xs">Bandung</p>
+                    </div>
+                  </div>
+                  <p class="font-semibold mb-1">PO Haryanto - Jetbus 3+</p>
+                  <div
+                    class="flex items-center gap-3 text-blue-500 text-sm mb-2"
+                  >
+                    <i class="fas fa-snowflake" title="AC"></i>
+                    <i class="fas fa-wifi" title="WiFi"></i>
+                  </div>
+                  <div class="flex justify-between items-center mt-2">
+                    <p class="text-sm text-gray-500">Tersedia: 10 Kursi</p>
+                    <p class="font-bold text-orange-500 text-lg">Rp 180.000</p>
+                  </div>
+                  <button
+                    class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                  >
+                    Pesan Tiket
+                  </button>
+                </div>
+              </div>
+
+              <!-- Tiket 2 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <div class="p-4 text-base">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">09:30</p>
+                      <p class="text-xs">Surabaya</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">10 jam</p>
+                      <p class="text-xl">→</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">19:30</p>
+                      <p class="text-xs">Yogyakarta</p>
+                    </div>
+                  </div>
+                  <p class="font-semibold mb-1">
+                    Rosalia Indah - Double Decker
+                  </p>
+                  <div
+                    class="flex items-center gap-3 text-blue-500 text-sm mb-2"
+                  >
+                    <i class="fas fa-snowflake"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-tv"></i>
+                  </div>
+                  <div class="flex justify-between items-center mt-2">
+                    <p class="text-sm text-gray-500">Tersedia: 5 Kursi</p>
+                    <p class="font-bold text-orange-500 text-lg">Rp 250.000</p>
+                  </div>
+                  <button
+                    class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                  >
+                    Pesan Tiket
+                  </button>
+                </div>
+              </div>
+
+              <!-- Tiket 3 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <div class="p-4 text-base">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">06:00</p>
+                      <p class="text-xs">Solo</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">4.5 jam</p>
+                      <p class="text-xl">→</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">10:30</p>
+                      <p class="text-xs">Semarang</p>
+                    </div>
+                  </div>
+                  <p class="font-semibold mb-1">Sinar Jaya - Executive</p>
+                  <div
+                    class="flex items-center gap-3 text-blue-500 text-sm mb-2"
+                  >
+                    <i class="fas fa-snowflake"></i>
+                    <i class="fas fa-plug"></i>
+                  </div>
+                  <div class="flex justify-between items-center mt-2">
+                    <p class="text-sm text-gray-500">Tersedia: 8 Kursi</p>
+                    <p class="font-bold text-orange-500 text-lg">Rp 120.000</p>
+                  </div>
+                  <button
+                    class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                  >
+                    Pesan Tiket
+                  </button>
+                </div>
+              </div>
+
+              <!-- Tiket 4 -->
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <div class="p-4 text-base">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">22:00</p>
+                      <p class="text-xs">Jakarta</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">12 jam</p>
+                      <p class="text-xl">→</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">10:00</p>
+                      <p class="text-xs">Malang</p>
+                    </div>
+                  </div>
+                  <p class="font-semibold mb-1">Handoyo - Ekonomi</p>
+                  <div
+                    class="flex items-center gap-3 text-blue-500 text-sm mb-2"
+                  >
+                    <i class="fas fa-snowflake"></i>
+                  </div>
+                  <div class="flex justify-between items-center mt-2">
+                    <p class="text-sm text-gray-500">Tersedia: 3 Kursi</p>
+                    <p class="font-bold text-orange-500 text-lg">Rp 200.000</p>
+                  </div>
+                  <button
+                    class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                  >
+                    Pesan Tiket
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <div class="p-4 text-base">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">07:15</p>
+                      <p class="text-xs">Bandung</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">2 jam</p>
+                      <p class="text-xl">→</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">09:15</p>
+                      <p class="text-xs">Garut</p>
+                    </div>
+                  </div>
+                  <p class="font-semibold mb-1">Bus Budiman - Eksekutif</p>
+                  <div
+                    class="flex items-center gap-3 text-blue-500 text-sm mb-2"
+                  >
+                    <i class="fas fa-snowflake"></i>
+                  </div>
+                  <div class="flex justify-between items-center mt-2">
+                    <p class="text-sm text-gray-500">Tersedia: 12 Kursi</p>
+                    <p class="font-bold text-orange-500 text-lg">Rp 60.000</p>
+                  </div>
+                  <button
+                    class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                  >
+                    Pesan Tiket
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <div class="p-4 text-base">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">20:00</p>
+                      <p class="text-xs">Denpasar</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">12 jam</p>
+                      <p class="text-xl">→</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">08:00</p>
+                      <p class="text-xs">Mataram</p>
+                    </div>
+                  </div>
+                  <p class="font-semibold mb-1">Perama Tour - Shuttle</p>
+                  <div
+                    class="flex items-center gap-3 text-blue-500 text-sm mb-2"
+                  >
+                    <i class="fas fa-snowflake"></i>
+                    <i class="fas fa-wifi"></i>
+                  </div>
+                  <div class="flex justify-between items-center mt-2">
+                    <p class="text-sm text-gray-500">Tersedia: 6 Kursi</p>
+                    <p class="font-bold text-orange-500 text-lg">Rp 220.000</p>
+                  </div>
+                  <button
+                    class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                  >
+                    Pesan Tiket
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <div class="p-4 text-base">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">18:00</p>
+                      <p class="text-xs">Medan</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">10 jam</p>
+                      <p class="text-xl">→</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">04:00</p>
+                      <p class="text-xs">Pekanbaru</p>
+                    </div>
+                  </div>
+                  <p class="font-semibold mb-1">ALS - Patas AC</p>
+                  <div
+                    class="flex items-center gap-3 text-blue-500 text-sm mb-2"
+                  >
+                    <i class="fas fa-snowflake"></i>
+                    <i class="fas fa-plug"></i>
+                  </div>
+                  <div class="flex justify-between items-center mt-2">
+                    <p class="text-sm text-gray-500">Tersedia: 4 Kursi</p>
+                    <p class="font-bold text-orange-500 text-lg">Rp 300.000</p>
+                  </div>
+                  <button
+                    class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                  >
+                    Pesan Tiket
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+              >
+                <div class="p-4 text-base">
+                  <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">14:30</p>
+                      <p class="text-xs">Padang</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-500">2.5 jam</p>
+                      <p class="text-xl">→</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-lg text-blue-600">17:00</p>
+                      <p class="text-xs">Bukittinggi</p>
+                    </div>
+                  </div>
+                  <p class="font-semibold mb-1">NPM - Mini Bus</p>
+                  <div
+                    class="flex items-center gap-3 text-blue-500 text-sm mb-2"
+                  >
+                    <i class="fas fa-snowflake"></i>
+                  </div>
+                  <div class="flex justify-between items-center mt-2">
+                    <p class="text-sm text-gray-500">Tersedia: 9 Kursi</p>
+                    <p class="font-bold text-orange-500 text-lg">Rp 70.000</p>
+                  </div>
+                  <button
+                    class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                  >
+                    Pesan Tiket
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const busSwiper = new Swiper(".bus-swiper", {
+        slidesPerView: 1.1,
+        spaceBetween: 16,
+        breakpoints: {
+          640: { slidesPerView: 2 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 },
+        },
+        navigation: {
+          nextEl: ".bus-swiper-next",
+          prevEl: ".bus-swiper-prev",
+        },
+      });
+    </script>
+
+    <section id="kereta" class="py-10 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-2xl font-bold mb-6">Tiket Kereta Api</h2>
+
+        <div class="swiper kereta-swiper">
+          <div class="swiper-wrapper">
+            <!-- Tiket Kereta 1 -->
+            <div
+              class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+            >
+              <div class="p-4 text-base">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">06:45</p>
+                    <p class="text-xs">Stasiun Gambir (GMR)</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500">8 jam 30 mnt</p>
+                    <p class="text-xl">→</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">15:15</p>
+                    <p class="text-xs">Stasiun Tugu Yogyakarta (YK)</p>
+                  </div>
+                </div>
+
+                <p class="font-semibold mb-1">Argo Dwipangga - Eksekutif</p>
+                <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                  <i class="fas fa-snowflake"></i>
+                  <i class="fas fa-plug"></i>
+                </div>
+
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-sm text-gray-500">
+                    Gerbong: 3B | Kursi Tersedia: 7
+                  </p>
+                  <p class="font-bold text-orange-500 text-lg">Rp 450.000</p>
+                </div>
+
+                <button
+                  class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                >
+                  Pesan Tiket
+                </button>
+              </div>
+            </div>
+
+            <!-- Tiket Kereta 2 -->
+            <div
+              class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+            >
+              <div class="p-4 text-base">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">21:00</p>
+                    <p class="text-xs">Stasiun Pasar Senen (PSE)</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500">11 jam</p>
+                    <p class="text-xl">→</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">08:00</p>
+                    <p class="text-xs">Stasiun Surabaya Gubeng (SGU)</p>
+                  </div>
+                </div>
+
+                <p class="font-semibold mb-1">
+                  Gaya Baru Malam Selatan - Ekonomi
+                </p>
+                <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                  <i class="fas fa-snowflake"></i>
+                </div>
+
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-sm text-gray-500">
+                    Gerbong: 7D | Kursi Tersedia: 5
+                  </p>
+                  <p class="font-bold text-orange-500 text-lg">Rp 200.000</p>
+                </div>
+
+                <button
+                  class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                >
+                  Pesan Tiket
+                </button>
+              </div>
+            </div>
+
+            <!-- Tiket Kereta 3 -->
+            <div
+              class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+            >
+              <div class="p-4 text-base">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">05:30</p>
+                    <p class="text-xs">Stasiun Bandung (BD)</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500">3 jam 15 mnt</p>
+                    <p class="text-xl">→</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">08:45</p>
+                    <p class="text-xs">Stasiun Jakarta (GMR)</p>
+                  </div>
+                </div>
+                <p class="font-semibold mb-1">Lodaya Pagi - Bisnis</p>
+                <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                  <i class="fas fa-snowflake"></i>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-sm text-gray-500">
+                    Gerbong: 2C | Kursi Tersedia: 9
+                  </p>
+                  <p class="font-bold text-orange-500 text-lg">Rp 250.000</p>
+                </div>
+                <button
+                  class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                >
+                  Pesan Tiket
+                </button>
+              </div>
+            </div>
+
+            <!-- Tiket Kereta 4 -->
+            <div
+              class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+            >
+              <div class="p-4 text-base">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">16:00</p>
+                    <p class="text-xs">Stasiun Semarang Tawang (SMT)</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500">6 jam</p>
+                    <p class="text-xl">→</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">22:00</p>
+                    <p class="text-xs">Stasiun Surabaya Pasar Turi (SBI)</p>
+                  </div>
+                </div>
+                <p class="font-semibold mb-1">Jayabaya - Eksekutif</p>
+                <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                  <i class="fas fa-snowflake"></i>
+                  <i class="fas fa-plug"></i>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-sm text-gray-500">
+                    Gerbong: 5A | Kursi Tersedia: 5
+                  </p>
+                  <p class="font-bold text-orange-500 text-lg">Rp 320.000</p>
+                </div>
+                <button
+                  class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                >
+                  Pesan Tiket
+                </button>
+              </div>
+            </div>
+
+            <!-- Tiket Kereta 5 -->
+            <div
+              class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+            >
+              <div class="p-4 text-base">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">12:00</p>
+                    <p class="text-xs">Stasiun Malang (ML)</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500">5 jam 45 mnt</p>
+                    <p class="text-xl">→</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">17:45</p>
+                    <p class="text-xs">Stasiun Yogyakarta (YK)</p>
+                  </div>
+                </div>
+                <p class="font-semibold mb-1">Majapahit - Ekonomi</p>
+                <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                  <i class="fas fa-snowflake"></i>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-sm text-gray-500">
+                    Gerbong: 4D | Kursi Tersedia: 9
+                  </p>
+                  <p class="font-bold text-orange-500 text-lg">Rp 180.000</p>
+                </div>
+                <button
+                  class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                >
+                  Pesan Tiket
+                </button>
+              </div>
+            </div>
+
+            <!-- Tiket Kereta 6 -->
+            <div
+              class="swiper-slide bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition max-w-[90%] sm:max-w-full mx-auto"
+            >
+              <div class="p-4 text-base">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">07:45</p>
+                    <p class="text-xs">Stasiun Solo Balapan (SLO)</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500">3 jam 40 mnt</p>
+                    <p class="text-xl">→</p>
+                  </div>
+                  <div>
+                    <p class="font-bold text-lg text-blue-600">11:25</p>
+                    <p class="text-xs">Stasiun Semarang (SMT)</p>
+                  </div>
+                </div>
+                <p class="font-semibold mb-1">Kalijaga - Ekonomi</p>
+                <div class="flex items-center gap-3 text-blue-500 text-sm mb-2">
+                  <i class="fas fa-snowflake"></i>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-sm text-gray-500">
+                    Gerbong: 6C | Kursi Tersedia: 8
+                  </p>
+                  <p class="font-bold text-orange-500 text-lg">Rp 130.000</p>
+                </div>
+                <button
+                  class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium"
+                >
+                  Pesan Tiket
+                </button>
+              </div>
+            </div>
+
+            <!-- Tambahan tiket bisa kamu lanjutkan -->
+          </div>
+
+          <!-- Navigasi Swiper -->
+          <div
+            class="swiper-button-next"
+            style="font-size: 16px; width: 30px; height: 30px"
+          ></div>
+          <div
+            class="swiper-button-prev"
+            style="font-size: 16px; width: 30px; height: 30px"
+          ></div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      .swiper-button-next,
+      .swiper-button-prev {
+        font-size: 16px; /* Ukuran font ikon */
+        width: 30px; /* Ukuran area klik horizontal */
+        height: 30px; /* Ukuran area klik vertikal */
+        background-color: rgba(0, 0, 0, 0.1); /* opsional biar lebih kalem */
+        border-radius: 50%;
+      }
+
+      .swiper-button-next::after,
+      .swiper-button-prev::after {
+        font-size: 16px; /* Ukuran ikon panah */
+        color: #333; /* Warna ikon */
+      }
+    </style>
+
+    <script>
+      const keretaSwiper = new Swiper(".kereta-swiper", {
+        slidesPerView: 1.2,
+        spaceBetween: 15,
+        loop: false,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        },
+      });
+    </script>
+
+    <!-- Footer with Social Media -->
+    <footer class="bg-gray-800 text-white py-10 mt-10">
+      <div
+        class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-5 gap-6 text-sm"
+      >
+        <div>
+          <h5 class="font-semibold mb-3">Produk</h5>
+          <ul class="space-y-1">
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Tiket Pesawat</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Hotel</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >To Do</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Rental Mobil</a
+              >
+            </li>
+            <!-- <li><a href="#" class="hover:text-blue-300 smooth-transition">Event</a></li> -->
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Xperience</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Kres-Nova PayLater</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3">Perusahaan</h5>
+          <ul class="space-y-1">
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Tentang Kami</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Karir</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition">Blog</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Pusat Media</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Kres-Nova Partners</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Kres-Nova Ads</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3">Dukungan</h5>
+          <ul class="space-y-1">
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Pusat Bantuan</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Syarat & Ketentuan</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Kebijakan Privasi</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Daftarkan Hotel Anda</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Daftarkan Bisnis Anda</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Kres-Nova Affiliate</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3">Hubungi Kami</h5>
+          <ul class="space-y-1">
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >Support Center</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >+62 856-1375-843</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-blue-300 smooth-transition"
+                >cs@Kres-Nova.com</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3">Ikuti Kami</h5>
+          <div class="flex space-x-3 mb-4">
+            <a
+              href="#"
+              class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-500 smooth-transition"
+            >
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a
+              href="#"
+              class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-300 smooth-transition"
+            >
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a
+              href="#"
+              class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-500 smooth-transition"
+            >
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a
+              href="#"
+              class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-500 smooth-transition"
+            >
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+          <h5 class="font-semibold mb-3">Unduh Aplikasi</h5>
+          <div class="space-y-2">
+            <a href="#" class="block">
+              <img
+                src="https://images.seeklogo.com/logo-png/32/2/appstore-logo-png_seeklogo-326280.png"
+                alt="App Store"
+                class="h-10"
+              />
+            </a>
+            <a href="#" class="block">
+              <img
+                src="https://images.seeklogo.com/logo-png/31/2/google-play-logo-png_seeklogo-318439.png"
+                alt="Google Play"
+                class="h-10"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-6xl mx-auto px-4 mt-8 pt-6 border-t border-gray-700">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="text-gray-400 text-xs mb-4 md:mb-0">
+            © 2025 Kres-Nova. Seluruh hak cipta dilindungi.
+          </div>
+          <div class="flex space-x-4">
+            <img
+              src="https://images.seeklogo.com/logo-png/23/2/bca-bank-logo-png_seeklogo-232742.png"
+              alt="Payment"
+              class="h-20"
+            />
+            <img
+              src="https://images.seeklogo.com/logo-png/39/2/dana-e-wallet-app-logo-png_seeklogo-399948.png"
+              alt="Payment"
+              class="h-20"
+            />
+            <img
+              src="https://images.seeklogo.com/logo-png/45/2/bank-bri-logo-png_seeklogo-459990.png"
+              alt="Payment"
+              class="h-16"
+            />
+            <img
+              src="https://images.seeklogo.com/logo-png/1/2/bank-mandiri-logo-png_seeklogo-16290.png"
+              alt="Payment"
+              class="h-16"
+            />
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

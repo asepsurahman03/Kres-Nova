@@ -1,0 +1,126 @@
+ <!-- Search Section with Autocomplete -->
+ <section class="bg-blue-500 text-white py-10">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex flex-wrap gap-2 mb-4" id="tab-menu">
+        <div class="tab px-4 py-2 bg-white text-blue-500 rounded-t font-medium cursor-pointer hover:bg-blue-50 smooth-transition" data-tab="pesawat">Pesawat</div>
+        <div class="tab px-4 py-2 bg-blue-400 text-white rounded-t cursor-pointer hover:bg-blue-300 smooth-transition" data-tab="hotel">Hotel</div>
+        <div class="tab px-4 py-2 bg-blue-400 text-white rounded-t cursor-pointer hover:bg-blue-300 smooth-transition" data-tab="combo">Pesawat + Hotel</div>
+        <div class="tab px-4 py-2 bg-blue-400 text-white rounded-t cursor-pointer hover:bg-blue-300 smooth-transition" data-tab="mobil">Rental Mobil</div>
+        <div class="tab px-4 py-2 bg-blue-400 text-white rounded-t cursor-pointer hover:bg-blue-300 smooth-transition" data-tab="bus">Tiket Bus</div>
+        <div class="tab px-4 py-2 bg-blue-400 text-white rounded-t cursor-pointer hover:bg-blue-300 smooth-transition" data-tab="kereta">Tiket Kereta</div>
+      </div>  
+
+      <div class="bg-white text-gray-800 rounded-b shadow-lg p-6 smooth-transition" id="tab-content">
+        <div data-content="pesawat" class="tab-panel block">
+          <form class="grid md:grid-cols-3 gap-4">
+            <input type="text" placeholder="Dari" class="border p-2 rounded w-full">
+            <input type="text" placeholder="Ke" class="border p-2 rounded w-full">
+            <input type="text" placeholder="Tanggal Berangkat" class="border p-2 rounded w-full datepicker">
+            <button type="submit" class="md:col-span-3 bg-orange-500 text-white py-2 rounded hover:bg-orange-600">Cari Tiket Pesawat</button>
+          </form>
+        </div>
+      
+        <div data-content="hotel" class="tab-panel hidden">
+          <form class="grid md:grid-cols-3 gap-4">
+            <input type="text" placeholder="Kota atau Nama Hotel" class="border p-2 rounded w-full">
+            <input type="text" placeholder="Check-in" class="border p-2 rounded w-full datepicker">
+            <input type="text" placeholder="Check-out" class="border p-2 rounded w-full datepicker">
+            <button type="submit" class="md:col-span-3 bg-orange-500 text-white py-2 rounded hover:bg-orange-600">Cari Hotel</button>
+          </form>
+        </div>
+      
+        <div data-content="combo" class="tab-panel hidden">
+          <form class="grid md:grid-cols-3 gap-4">
+            <input type="text" placeholder="Destinasi" class="border p-2 rounded w-full">
+            <input type="text" placeholder="Tanggal Keberangkatan" class="border p-2 rounded w-full datepicker">
+            <input type="text" placeholder="Tanggal Pulang" class="border p-2 rounded w-full datepicker">
+            <button type="submit" class="md:col-span-3 bg-orange-500 text-white py-2 rounded hover:bg-orange-600">Cari Paket</button>
+          </form>
+        </div>
+      
+        <div data-content="mobil" class="tab-panel hidden">
+          <form class="grid md:grid-cols-3 gap-4">
+            <input type="text" placeholder="Lokasi Jemput" class="border p-2 rounded w-full">
+            <input type="text" placeholder="Tanggal Sewa" class="border p-2 rounded w-full datepicker">
+            <input type="text" placeholder="Durasi (hari)" class="border p-2 rounded w-full">
+            <button type="submit" class="md:col-span-3 bg-orange-500 text-white py-2 rounded hover:bg-orange-600">Cari Mobil</button>
+          </form>
+        </div>
+      
+        <div data-content="bus" class="tab-panel hidden">
+          <form class="grid md:grid-cols-3 gap-4">
+            <input type="text" placeholder="Dari" class="border p-2 rounded w-full">
+            <input type="text" placeholder="Ke" class="border p-2 rounded w-full">
+            <input type="text" placeholder="Tanggal Keberangkatan" class="border p-2 rounded w-full datepicker">
+            <button type="submit" class="md:col-span-3 bg-orange-500 text-white py-2 rounded hover:bg-orange-600">Cari Bus</button>
+          </form>
+        </div>
+      
+        <div data-content="kereta" class="tab-panel hidden">
+          <form class="grid md:grid-cols-3 gap-4">
+            <input type="text" placeholder="Stasiun Awal" class="border p-2 rounded w-full">
+            <input type="text" placeholder="Stasiun Tujuan" class="border p-2 rounded w-full">
+            <input type="text" placeholder="Tanggal Berangkat" class="border p-2 rounded w-full datepicker">
+            <button type="submit" class="md:col-span-3 bg-orange-500 text-white py-2 rounded hover:bg-orange-600">Cari Tiket Kereta</button>
+          </form>
+        </div>
+      </div>
+      
+        <div class="flex space-x-6 mb-4">
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="trip" onclick="toggleTripType(false)" checked class="cursor-pointer">
+            <span>Sekali Jalan</span>
+          </label>
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="trip" onclick="toggleTripType(true)" class="cursor-pointer">
+            <span>Pulang Pergi</span>
+          </label>
+        </div>
+        <div class="grid md:grid-cols-4 gap-4">
+          <div class="relative">
+            <input type="text" id="from-input" placeholder="Dari (Kota atau Bandara)" class="border p-2 rounded w-full autocomplete-input" autocomplete="off">
+            <div id="from-autocomplete" class="autocomplete-dropdown hidden absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-y-auto"></div>
+          </div>
+          <div class="relative">
+            <input type="text" id="to-input" placeholder="Ke (Kota atau Bandara)" class="border p-2 rounded w-full autocomplete-input" autocomplete="off">
+            <div id="to-autocomplete" class="autocomplete-dropdown hidden absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-y-auto"></div>
+          </div>
+          <div class="relative">
+            <input type="text" id="departure-date" placeholder="Berangkat" class="border p-2 rounded w-full datepicker">
+          </div>
+          <div class="relative">
+            <input type="text" id="return-date" placeholder="Pulang" class="border p-2 rounded w-full datepicker">
+          </div>
+          <div class="relative">
+            <select class="border p-2 rounded w-full cursor-pointer hover:border-blue-400 smooth-transition">
+              <option>1 Dewasa</option>
+              <option>2 Dewasa</option>
+              <option>3 Dewasa</option>
+              <option>1 Dewasa, 1 Anak</option>
+              <option>1 Dewasa, 2 Anak</option>
+              <option>2 Dewasa, 1 Anak</option>
+              <option>3 Dewasa, 2 Anak</option>
+            </select>
+          </div>
+          <div class="relative">
+            <select class="border p-2 rounded w-full cursor-pointer hover:border-blue-400 smooth-transition">
+              <option>Ekonomi</option>
+              <option>Premium Ekonomi</option>
+              <option>Bisnis</option>
+              <option>First Class</option>
+            </select>
+          </div>
+          <button id="search-button" class="col-span-2 bg-orange-500 text-white font-semibold py-2 rounded hover:bg-orange-600 smooth-transition flex items-center justify-center">
+            <span id="search-text">CARI TIKET PESAWAT</span>
+            <span id="search-loading" class="hidden ml-2">
+              <i class="fas fa-circle-notch loading-spinner"></i>
+            </span>
+          </button>
+        </div>
+        <div class="mt-4 flex items-center text-sm">
+          <input type="checkbox" id="direct-flight" class="mr-2 cursor-pointer">
+          <label for="direct-flight" class="cursor-pointer">Hanya penerbangan langsung</label>
+        </div>
+      </div>
+    </div>
+  </section>
