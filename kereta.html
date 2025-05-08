@@ -399,46 +399,39 @@
     <section class="py-6 px-4 md:px-12 bg-white">
       <!-- Filter Bar -->
       <div
-        class="mb-4 flex items-center gap-3 text-sm font-medium text-gray-600"
+        class="mb-4 flex flex-wrap md:flex-nowrap items-center gap-2 md:gap-3 text-sm font-medium text-gray-600 overflow-x-auto"
       >
-        <span>Filter:</span>
-        <button
-          class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium"
-        >
+        <span class="w-full md:w-auto">Filter:</span>
+        
+        <button class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium whitespace-nowrap">
           Waktu
         </button>
-        <button
-          class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium"
-        >
+        <button class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium whitespace-nowrap">
           Kelas
         </button>
-        <button
-          class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium"
-        >
+        <button class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium whitespace-nowrap">
           Kereta
         </button>
-        <button
-          class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium"
-        >
+        <button class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium whitespace-nowrap">
           Rute
         </button>
-        <button
-          class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium"
-        >
+        <button class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium whitespace-nowrap">
           Stasiun
         </button>
-        <button
-          class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium"
-        >
+        <button class="px-4 py-2 bg-gray-100 rounded-full hover:bg-gray-200 shadow-sm text-blue-600 font-medium whitespace-nowrap">
           Harga
         </button>
-        <button
-          class="ml-auto px-4 py-2 bg-white border border-gray-200 rounded-full shadow text-blue-600 font-semibold flex items-center gap-1"
-        >
-          URUTKAN <span class="text-blue-500">✔</span>
-        </button>
+    
+        <!-- Tombol Urutkan tetap di kanan di desktop, namun pindah ke bawah di mobile -->
+        <div class="w-full md:w-auto md:ml-auto mt-2 md:mt-0">
+          <button
+            class="w-full md:w-auto px-4 py-2 bg-white border border-gray-200 rounded-full shadow text-blue-600 font-semibold flex items-center justify-center gap-1"
+          >
+            URUTKAN <span class="text-blue-500">✔</span>
+          </button>
+        </div>
       </div>
-
+    
       <!-- Duplicate Card Example -->
       <div
         class="border rounded-xl shadow-sm p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center"
